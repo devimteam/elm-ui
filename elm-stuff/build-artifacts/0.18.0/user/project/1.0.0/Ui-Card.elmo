@@ -1,0 +1,99 @@
+var _user$project$Ui_Card$view = F2(
+	function (_p0, nodes) {
+		var _p1 = _p0;
+		var _p2 = _p1.open;
+		var transformValue = _p2 ? 'rotate(90deg)' : 'rotate(270deg)';
+		return A3(
+			_user$project$Ui_Options$styled,
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _user$project$Ui_Elevation$z1,
+				_1: {
+					ctor: '::',
+					_0: _user$project$Ui_Options$cs('block'),
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$Ui_Options$css, 'margin-top', '24px'),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A3(
+					_user$project$Ui_Options$styled,
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: A2(_user$project$Ui_Options$css, 'display', 'flex'),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Ui_Options$css, 'justify-content', 'space-between'),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Ui_Options$css, 'align-items', 'center'),
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A3(
+							_user$project$Ui_Options$styled,
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _user$project$Ui_Typography$headline,
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(_p1.title),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A3(
+								_user$project$Icons_Icon$asButton,
+								'chevron_left',
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'transform', _1: transformValue},
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(_p1.toMsg),
+										_1: {ctor: '[]'}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A3(
+						_user$project$Ui_Options$styled,
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: A2(
+								_user$project$Ui_Options$when,
+								_p2,
+								A2(_user$project$Ui_Options$css, 'margin-top', '24px')),
+							_1: {ctor: '[]'}
+						},
+						_p2 ? nodes : {ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Ui_Card$Config = F3(
+	function (a, b, c) {
+		return {open: a, title: b, toMsg: c};
+	});

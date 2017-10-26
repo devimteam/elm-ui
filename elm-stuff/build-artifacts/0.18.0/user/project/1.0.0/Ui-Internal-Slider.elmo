@@ -1,0 +1,31 @@
+var _user$project$Ui_Internal_Slider$defaultGeometry = {width: 0, left: 0, x: 0, discrete: true, min: 0, max: 100, steps: 1};
+var _user$project$Ui_Internal_Slider$Geometry = F7(
+	function (a, b, c, d, e, f, g) {
+		return {width: a, left: b, x: c, discrete: d, steps: e, min: f, max: g};
+	});
+var _user$project$Ui_Internal_Slider$MouseDrag = function (a) {
+	return {ctor: 'MouseDrag', _0: a};
+};
+var _user$project$Ui_Internal_Slider$MouseUp = function (a) {
+	return {ctor: 'MouseUp', _0: a};
+};
+var _user$project$Ui_Internal_Slider$AnimationFrame = {ctor: 'AnimationFrame'};
+var _user$project$Ui_Internal_Slider$Resize = {ctor: 'Resize'};
+var _user$project$Ui_Internal_Slider$Init = function (a) {
+	return {ctor: 'Init', _0: a};
+};
+var _user$project$Ui_Internal_Slider$Tick = {ctor: 'Tick'};
+var _user$project$Ui_Internal_Slider$Up = {ctor: 'Up'};
+var _user$project$Ui_Internal_Slider$SetValue = function (a) {
+	return {ctor: 'SetValue', _0: a};
+};
+var _user$project$Ui_Internal_Slider$Activate = F2(
+	function (a, b) {
+		return {ctor: 'Activate', _0: a, _1: b};
+	});
+var _user$project$Ui_Internal_Slider$Input = function (a) {
+	return {ctor: 'Input', _0: a};
+};
+var _user$project$Ui_Internal_Slider$Blur = {ctor: 'Blur'};
+var _user$project$Ui_Internal_Slider$Focus = {ctor: 'Focus'};
+var _user$project$Ui_Internal_Slider$NoOp = {ctor: 'NoOp'};

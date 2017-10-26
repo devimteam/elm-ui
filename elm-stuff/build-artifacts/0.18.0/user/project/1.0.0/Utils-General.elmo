@@ -1,0 +1,38 @@
+var _user$project$Utils_General$formatTime = function (dateString) {
+	var date = _elm_lang$core$Date$fromString(dateString);
+	var result = function () {
+		var _p0 = date;
+		if (_p0.ctor === 'Ok') {
+			return A2(_mgold$elm_date_format$Date_Format$format, '%H:%M:%S', _p0._0);
+		} else {
+			return '';
+		}
+	}();
+	return result;
+};
+var _user$project$Utils_General$formatDate = function (dateString) {
+	var date = _elm_lang$core$Date$fromString(dateString);
+	var result = function () {
+		var _p1 = date;
+		if (_p1.ctor === 'Ok') {
+			return A2(_mgold$elm_date_format$Date_Format$format, '%d.%m.%Y', _p1._0);
+		} else {
+			return '';
+		}
+	}();
+	return result;
+};
+var _user$project$Utils_General$pluralize = F2(
+	function (_p2, count) {
+		var _p3 = _p2;
+		var _p4 = _p3._2;
+		var n10 = A2(_elm_lang$core$Basics_ops['%'], count, 10);
+		var n = A2(_elm_lang$core$Basics_ops['%'], count, 100);
+		return ((_elm_lang$core$Native_Utils.cmp(n, 5) > -1) && (_elm_lang$core$Native_Utils.cmp(n, 20) < 1)) ? _p4 : (_elm_lang$core$Native_Utils.eq(n10, 1) ? _p3._0 : (((_elm_lang$core$Native_Utils.cmp(n10, 2) > -1) && (_elm_lang$core$Native_Utils.cmp(n, 4) < 1)) ? _p3._1 : _p4));
+	});
+var _user$project$Utils_General$rusLocale1 = A5(_cuducos$elm_format_number$FormatNumber_Locales$Locale, 2, ' ', ',', '-', '');
+var _user$project$Utils_General$rusLocale = A5(_cuducos$elm_format_number$FormatNumber_Locales$Locale, 0, ' ', ',', '-', '');
+var _user$project$Utils_General$Plural = F3(
+	function (a, b, c) {
+		return {ctor: 'Plural', _0: a, _1: b, _2: c};
+	});

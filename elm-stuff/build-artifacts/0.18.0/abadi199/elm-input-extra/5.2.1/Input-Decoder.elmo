@@ -1,0 +1,11 @@
+var _abadi199$elm_input_extra$Input_Decoder$Event = F4(
+	function (a, b, c, d) {
+		return {keyCode: a, ctrlKey: b, altKey: c, metaKey: d};
+	});
+var _abadi199$elm_input_extra$Input_Decoder$eventDecoder = A5(
+	_elm_lang$core$Json_Decode$map4,
+	_abadi199$elm_input_extra$Input_Decoder$Event,
+	A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'ctrlKey', _elm_lang$core$Json_Decode$bool),
+	A2(_elm_lang$core$Json_Decode$field, 'altKey', _elm_lang$core$Json_Decode$bool),
+	A2(_elm_lang$core$Json_Decode$field, 'metaKey', _elm_lang$core$Json_Decode$bool));

@@ -1,0 +1,483 @@
+var _user$project$Ui_Ripple$decodeGeometry = function (type_) {
+	var traverseToContainer = function (cont) {
+		return _elm_lang$core$Json_Decode$oneOf(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$Json_Decode$andThen,
+					function (className) {
+						var encaps = function (str) {
+							return A2(
+								_elm_lang$core$Basics_ops['++'],
+								' ',
+								A2(_elm_lang$core$Basics_ops['++'], str, ' '));
+						};
+						var hasClass = function ($class) {
+							return function (_p0) {
+								return A2(
+									_elm_lang$core$String$contains,
+									encaps($class),
+									encaps(_p0));
+							};
+						};
+						return A2(hasClass, 'mdc-ripple-upgraded', className) ? cont : _elm_lang$core$Json_Decode$fail('Ripple.decodeGeometry');
+					},
+					_debois$elm_dom$DOM$className),
+				_1: {
+					ctor: '::',
+					_0: _debois$elm_dom$DOM$parentElement(
+						_elm_lang$core$Json_Decode$lazy(
+							function (_p1) {
+								return traverseToContainer(cont);
+							})),
+					_1: {ctor: '[]'}
+				}
+			});
+	};
+	return A2(
+		_elm_lang$core$Json_Decode$andThen,
+		function (event) {
+			return _debois$elm_dom$DOM$target(
+				traverseToContainer(
+					A3(
+						_elm_lang$core$Json_Decode$map2,
+						F2(
+							function (isSurfaceDisabled, frame) {
+								return {event: event, isSurfaceDisabled: isSurfaceDisabled, frame: frame};
+							}),
+						_elm_lang$core$Json_Decode$oneOf(
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$Json_Decode$map,
+									_elm_lang$core$Basics$always(true),
+									A2(
+										_elm_lang$core$Json_Decode$at,
+										{
+											ctor: '::',
+											_0: 'disabled',
+											_1: {ctor: '[]'}
+										},
+										_elm_lang$core$Json_Decode$string)),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$core$Json_Decode$succeed(false),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_debois$elm_dom$DOM$boundingClientRect)));
+		},
+		A3(
+			_elm_lang$core$Json_Decode$map2,
+			F2(
+				function (pageX, pageY) {
+					return {type_: type_, pageX: pageX, pageY: pageY};
+				}),
+			A2(
+				_elm_lang$core$Json_Decode$at,
+				{
+					ctor: '::',
+					_0: 'pageX',
+					_1: {ctor: '[]'}
+				},
+				_elm_lang$core$Json_Decode$float),
+			A2(
+				_elm_lang$core$Json_Decode$at,
+				{
+					ctor: '::',
+					_0: 'pageY',
+					_1: {ctor: '[]'}
+				},
+				_elm_lang$core$Json_Decode$float)));
+};
+var _user$project$Ui_Ripple$view = F5(
+	function (isUnbounded, lift, model, _p3, _p2) {
+		var isVisible = model.active || model.animating;
+		var deactivateOn = function (event) {
+			return A2(
+				_user$project$Ui_Options$on,
+				event,
+				_elm_lang$core$Json_Decode$succeed(
+					lift(
+						_user$project$Ui_Internal_Ripple$Deactivate(event))));
+		};
+		var activateOn = function (event) {
+			return A2(
+				_user$project$Ui_Options$on,
+				event,
+				A2(
+					_elm_lang$core$Json_Decode$map,
+					function (_p4) {
+						return lift(
+							A3(
+								_user$project$Ui_Internal_Ripple$Activate,
+								event,
+								_elm_lang$core$Maybe$Just(true),
+								_p4));
+					},
+					_user$project$Ui_Ripple$decodeGeometry(event)));
+		};
+		var blurOn = function (event) {
+			return A2(
+				_user$project$Ui_Options$on,
+				event,
+				_elm_lang$core$Json_Decode$succeed(
+					lift(_user$project$Ui_Internal_Ripple$Blur)));
+		};
+		var focusOn = function (event) {
+			return A2(
+				_user$project$Ui_Options$on,
+				event,
+				_elm_lang$core$Json_Decode$succeed(
+					lift(_user$project$Ui_Internal_Ripple$Focus)));
+		};
+		var geometry = model.geometry;
+		var surfaceWidth = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(geometry.frame.width),
+			'px');
+		var surfaceHeight = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(geometry.frame.height),
+			'px');
+		var surfaceDiameter = _elm_lang$core$Basics$sqrt(
+			Math.pow(geometry.frame.width, 2) + Math.pow(geometry.frame.height, 2));
+		var maxRadius = surfaceDiameter + 10;
+		var maxDimension = A2(_elm_lang$core$Basics$max, geometry.frame.width, geometry.frame.height);
+		var initialSize = maxDimension * 0.6;
+		var fgSize = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(initialSize),
+			'px');
+		var fgScale = _elm_lang$core$Basics$toString(maxRadius / initialSize);
+		var endPoint = {x: (geometry.frame.width - initialSize) / 2, y: (geometry.frame.height - initialSize) / 2};
+		var translateEnd = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(endPoint.x),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'px, ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(endPoint.y),
+					'px')));
+		var wasActivatedByPointer = A2(
+			_elm_lang$core$List$member,
+			geometry.event.type_,
+			{
+				ctor: '::',
+				_0: 'mousedown',
+				_1: {
+					ctor: '::',
+					_0: 'touchstart',
+					_1: {
+						ctor: '::',
+						_0: 'pointerdown',
+						_1: {ctor: '[]'}
+					}
+				}
+			});
+		var startPoint = (wasActivatedByPointer && (!isUnbounded)) ? {x: (geometry.event.pageX - geometry.frame.left) - (initialSize / 2), y: (geometry.event.pageY - geometry.frame.top) - (initialSize / 2)} : {x: (geometry.frame.width - initialSize) / 2, y: (geometry.frame.height - initialSize) / 2};
+		var translateStart = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(startPoint.x),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'px, ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(startPoint.y),
+					'px')));
+		var top = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(startPoint.y),
+			'px');
+		var left = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(startPoint.x),
+			'px');
+		var summary = A2(
+			_user$project$Ui_Internal_Options$collect,
+			{ctor: '_Tuple0'},
+			_elm_lang$core$List$concat(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '::',
+						_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-surface-width', surfaceWidth),
+						_1: {
+							ctor: '::',
+							_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-surface-height', surfaceHeight),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-fg-size', fgSize),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-fg-scale', fgScale),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					_1: {
+						ctor: '::',
+						_0: isUnbounded ? {
+							ctor: '::',
+							_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-top', top),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-left', left),
+								_1: {ctor: '[]'}
+							}
+						} : {
+							ctor: '::',
+							_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-fg-translate-start', translateStart),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$Ui_Internal_Options$variable, '--mdc-ripple-fg-translate-end', translateEnd),
+								_1: {ctor: '[]'}
+							}
+						},
+						_1: {ctor: '[]'}
+					}
+				}));
+		var _p5 = _user$project$Ui_Internal_Options$cssVariables(summary);
+		var selector = _p5._0;
+		var styleNode = _p5._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _user$project$Ui_Options$many(
+				{
+					ctor: '::',
+					_0: focusOn('focus'),
+					_1: {
+						ctor: '::',
+						_0: blurOn('blur'),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Ui_Options$many(
+								A2(
+									_elm_lang$core$List$map,
+									activateOn,
+									{
+										ctor: '::',
+										_0: 'keydown',
+										_1: {
+											ctor: '::',
+											_0: 'mousedown',
+											_1: {
+												ctor: '::',
+												_0: 'pointerdown',
+												_1: {
+													ctor: '::',
+													_0: 'touchstart',
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									})),
+							_1: {
+								ctor: '::',
+								_0: _user$project$Ui_Options$many(
+									A2(
+										_elm_lang$core$List$map,
+										deactivateOn,
+										{
+											ctor: '::',
+											_0: 'keyup',
+											_1: {
+												ctor: '::',
+												_0: 'mouseup',
+												_1: {
+													ctor: '::',
+													_0: 'pointerup',
+													_1: {
+														ctor: '::',
+														_0: 'touchend',
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										})),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Ui_Options$cs('mdc-ripple-upgraded'),
+									_1: {
+										ctor: '::',
+										_0: function (_p6) {
+											return A2(
+												_user$project$Ui_Options$when,
+												isUnbounded,
+												_user$project$Ui_Options$many(_p6));
+										}(
+											{
+												ctor: '::',
+												_0: _user$project$Ui_Options$cs('mdc-ripple-upgraded--unbounded'),
+												_1: {
+													ctor: '::',
+													_0: A2(_user$project$Ui_Options$css, 'overflow', 'visible'),
+													_1: {
+														ctor: '::',
+														_0: A2(_user$project$Ui_Options$data, 'data-mdc-ripple-is-unbounded', ''),
+														_1: {ctor: '[]'}
+													}
+												}
+											}),
+										_1: {
+											ctor: '::',
+											_0: function (_p7) {
+												return A2(
+													_user$project$Ui_Options$when,
+													isVisible,
+													_user$project$Ui_Options$many(_p7));
+											}(
+												{
+													ctor: '::',
+													_0: _user$project$Ui_Options$cs('mdc-ripple-upgraded--background-active-fill'),
+													_1: {
+														ctor: '::',
+														_0: _user$project$Ui_Options$cs('mdc-ripple-upgraded--foreground-activation'),
+														_1: {ctor: '[]'}
+													}
+												}),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_user$project$Ui_Options$when,
+													model.deactivation,
+													_user$project$Ui_Options$cs('mdc-ripple-upgraded--foreground-deactivation')),
+												_1: {
+													ctor: '::',
+													_0: A2(
+														_user$project$Ui_Options$when,
+														model.focus,
+														_user$project$Ui_Options$cs('mdc-ripple-upgraded--background-focused')),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_user$project$Ui_Options$when,
+															isVisible,
+															_user$project$Ui_Options$cs(selector)),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}),
+			_1: isVisible ? styleNode : A3(
+				_elm_lang$html$Html$node,
+				'style',
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$type_('text/css'),
+					_1: {ctor: '[]'}
+				},
+				{ctor: '[]'})
+		};
+	});
+var _user$project$Ui_Ripple$primary = _user$project$Ui_Options$nop;
+var _user$project$Ui_Ripple$accent = _user$project$Ui_Options$nop;
+var _user$project$Ui_Ripple$update = F2(
+	function (msg, model) {
+		var _p8 = msg;
+		switch (_p8.ctor) {
+			case 'Focus':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{focus: true}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Blur':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{focus: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Activate':
+				var _p10 = _p8._2;
+				var _p9 = _p8._0;
+				var isVisible = model.active || model.animating;
+				if (isVisible) {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{active: false, animating: false, deactivation: true}),
+						_1: A2(
+							_user$project$Ui_Internal_Helpers$delay,
+							83,
+							A3(_user$project$Ui_Internal_Ripple$Activate, _p9, _elm_lang$core$Maybe$Nothing, _p10))
+					};
+				} else {
+					var animation = model.animation + 1;
+					var active = A2(_elm_lang$core$Maybe$withDefault, model.active, _p8._1);
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{active: active, animating: true, geometry: _p10, deactivation: false, animation: animation}),
+						_1: A2(
+							_user$project$Ui_Internal_Helpers$delay,
+							300,
+							A2(_user$project$Ui_Internal_Ripple$AnimationEnd, _p9, animation))
+					};
+				}
+			case 'Deactivate':
+				var _p12 = _p8._0;
+				var sameEvent = function () {
+					var _p11 = model.geometry.event.type_;
+					switch (_p11) {
+						case 'keydown':
+							return _elm_lang$core$Native_Utils.eq(_p12, 'keyup');
+						case 'mousedown':
+							return _elm_lang$core$Native_Utils.eq(_p12, 'mouseup');
+						case 'pointerdown':
+							return _elm_lang$core$Native_Utils.eq(_p12, 'pointerup');
+						case 'touchstart':
+							return _elm_lang$core$Native_Utils.eq(_p12, 'touchend');
+						default:
+							return false;
+					}
+				}();
+				return (!sameEvent) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{active: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return ((!_elm_lang$core$Native_Utils.eq(model.geometry.event.type_, _p8._0)) || (!_elm_lang$core$Native_Utils.eq(_p8._1, model.animation))) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{animating: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
+var _user$project$Ui_Ripple$delay = F2(
+	function (time, msg) {
+		return A2(
+			_elm_lang$core$Task$perform,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$Task$andThen,
+				_elm_lang$core$Basics$always(
+					_elm_lang$core$Task$succeed(msg)),
+				_elm_lang$core$Process$sleep(time)));
+	});
+var _user$project$Ui_Ripple$defaultModel = {focus: false, active: false, animating: false, deactivation: false, geometry: _user$project$Ui_Internal_Ripple$defaultGeometry, animation: 0};
+var _user$project$Ui_Ripple$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {focus: a, active: b, animating: c, deactivation: d, geometry: e, animation: f};
+	});

@@ -1,0 +1,100 @@
+var _user$project$Ui_Dialog$open = _user$project$Ui_Options$cs('mdc-dialog--open');
+var _user$project$Ui_Dialog$theDialog = 'elm-mdc-singleton-dialog';
+var _user$project$Ui_Dialog$view = F2(
+	function (styling, nodes) {
+		return A4(
+			_user$project$Ui_Options$styled_,
+			_elm_lang$html$Html$node('aside'),
+			{
+				ctor: '::',
+				_0: _user$project$Ui_Options$cs('mdc-dialog'),
+				_1: styling
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$id(_user$project$Ui_Dialog$theDialog),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__surface'),
+						_1: {ctor: '[]'}
+					},
+					nodes),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('mdc-dialog__backdrop'),
+							_1: {ctor: '[]'}
+						},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Ui_Dialog$cancelButton = F2(
+	function (button, options) {
+		return button(
+			{
+				ctor: '::',
+				_0: _user$project$Ui_Options$cs('mdc-dialog__footer__button'),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Ui_Options$cs('mdc-dialog__footer__button--cancel'),
+					_1: options
+				}
+			});
+	});
+var _user$project$Ui_Dialog$acceptButton = F2(
+	function (button, options) {
+		return button(
+			{
+				ctor: '::',
+				_0: _user$project$Ui_Options$cs('mdc-dialog__footer__button'),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Ui_Options$cs('mdc-dialog__footer__button--accept'),
+					_1: options
+				}
+			});
+	});
+var _user$project$Ui_Dialog$footer = function (options) {
+	return _user$project$Ui_Options$div(
+		{
+			ctor: '::',
+			_0: _user$project$Ui_Options$cs('mdc-dialog__footer'),
+			_1: options
+		});
+};
+var _user$project$Ui_Dialog$scrollable = _user$project$Ui_Options$cs('mdc-dialog__body--scrollable');
+var _user$project$Ui_Dialog$body = function (options) {
+	return _user$project$Ui_Options$div(
+		{
+			ctor: '::',
+			_0: _user$project$Ui_Options$cs('mdc-dialog__body'),
+			_1: options
+		});
+};
+var _user$project$Ui_Dialog$title = function (options) {
+	return _user$project$Ui_Options$div(
+		{
+			ctor: '::',
+			_0: _user$project$Ui_Options$cs('mdc-dialog__header__title'),
+			_1: options
+		});
+};
+var _user$project$Ui_Dialog$header = function (options) {
+	return _user$project$Ui_Options$header(
+		{
+			ctor: '::',
+			_0: _user$project$Ui_Options$cs('mdc-dialog__header'),
+			_1: options
+		});
+};

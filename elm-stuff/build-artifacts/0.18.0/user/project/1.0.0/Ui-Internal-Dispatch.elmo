@@ -1,0 +1,3 @@
+var _user$project$Ui_Internal_Dispatch$Config = function (a) {
+	return {ctor: 'Config', _0: a};
+};

@@ -7,7 +7,6 @@ module Ui.Internal.Textfield
         , element
         )
 
-import Form
 import MaskedInput.Text as MaskedText
 import DOM
 import Json.Decode as Json exposing (Decoder)

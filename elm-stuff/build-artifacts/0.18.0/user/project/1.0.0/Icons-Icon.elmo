@@ -1,0 +1,125 @@
+var _user$project$Icons_Icon$view = F2(
+	function (name, a) {
+		return A2(
+			_elm_lang$html$Html$i,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('material-icons'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'font-size', _1: '24px'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'color', _1: 'rgba(0,0,0,.54)'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'box-sizing', _1: 'border-box'},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'border', _1: '0'},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'outline', _1: 'none'},
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}),
+						_1: {ctor: '[]'}
+					}
+				},
+				a),
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(name),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Icons_Icon$asButton = F3(
+	function (name, buttonAttrs, iconAttrs) {
+		return A2(
+			_elm_lang$html$Html$button,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'width', _1: '24px'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'height', _1: '24px'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'background-color', _1: 'rgba(0, 0, 0, 0)'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'cursor', _1: 'pointer '},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'padding', _1: '0px '},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'border', _1: '0'},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'outline', _1: 'none'},
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}
+						}),
+					_1: {ctor: '[]'}
+				},
+				buttonAttrs),
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$i,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('material-icons'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'font-size', _1: '24px'},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'cursor', _1: 'pointer'},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'color', _1: 'rgba(0,0,0,.54)'},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'box-sizing', _1: 'border-box'},
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}
+						},
+						iconAttrs),
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(name),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});

@@ -1,0 +1,3 @@
+var _user$project$Ui_Internal_Button$RippleMsg = function (a) {
+	return {ctor: 'RippleMsg', _0: a};
+};

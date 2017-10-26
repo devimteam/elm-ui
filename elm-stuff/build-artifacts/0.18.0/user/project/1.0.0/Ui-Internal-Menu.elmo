@@ -1,0 +1,23 @@
+var _user$project$Ui_Internal_Menu$Geometry = function (a) {
+	return {menu: a};
+};
+var _user$project$Ui_Internal_Menu$Element = F4(
+	function (a, b, c, d) {
+		return {offsetTop: a, offsetLeft: b, offsetHeight: c, bounds: d};
+	});
+var _user$project$Ui_Internal_Menu$element = A5(_elm_lang$core$Json_Decode$map4, _user$project$Ui_Internal_Menu$Element, _debois$elm_dom$DOM$offsetTop, _debois$elm_dom$DOM$offsetLeft, _debois$elm_dom$DOM$offsetHeight, _debois$elm_dom$DOM$boundingClientRect);
+var _user$project$Ui_Internal_Menu$decoder = A2(
+	_elm_lang$core$Json_Decode$map,
+	_user$project$Ui_Internal_Menu$Geometry,
+	_debois$elm_dom$DOM$target(_user$project$Ui_Internal_Menu$element));
+var _user$project$Ui_Internal_Menu$Init = function (a) {
+	return {ctor: 'Init', _0: a};
+};
+var _user$project$Ui_Internal_Menu$Click = function (a) {
+	return {ctor: 'Click', _0: a};
+};
+var _user$project$Ui_Internal_Menu$Toggle = function (a) {
+	return {ctor: 'Toggle', _0: a};
+};
+var _user$project$Ui_Internal_Menu$Close = {ctor: 'Close'};
+var _user$project$Ui_Internal_Menu$Open = {ctor: 'Open'};
