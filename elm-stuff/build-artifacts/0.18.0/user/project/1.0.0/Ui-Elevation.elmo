@@ -1,0 +1,33 @@
+var _user$project$Ui_Elevation$transition = _user$project$Ui_Options$cs('mdc-elevation--transition');
+var _user$project$Ui_Elevation$z = function (v) {
+	return _user$project$Ui_Options$cs(
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'mdc-elevation--z',
+			_elm_lang$core$Basics$toString(v)));
+};
+var _user$project$Ui_Elevation$z24 = _user$project$Ui_Elevation$z(24);
+var _user$project$Ui_Elevation$z23 = _user$project$Ui_Elevation$z(23);
+var _user$project$Ui_Elevation$z22 = _user$project$Ui_Elevation$z(22);
+var _user$project$Ui_Elevation$z21 = _user$project$Ui_Elevation$z(21);
+var _user$project$Ui_Elevation$z20 = _user$project$Ui_Elevation$z(20);
+var _user$project$Ui_Elevation$z19 = _user$project$Ui_Elevation$z(19);
+var _user$project$Ui_Elevation$z18 = _user$project$Ui_Elevation$z(18);
+var _user$project$Ui_Elevation$z17 = _user$project$Ui_Elevation$z(17);
+var _user$project$Ui_Elevation$z16 = _user$project$Ui_Elevation$z(16);
+var _user$project$Ui_Elevation$z15 = _user$project$Ui_Elevation$z(15);
+var _user$project$Ui_Elevation$z14 = _user$project$Ui_Elevation$z(14);
+var _user$project$Ui_Elevation$z13 = _user$project$Ui_Elevation$z(13);
+var _user$project$Ui_Elevation$z12 = _user$project$Ui_Elevation$z(12);
+var _user$project$Ui_Elevation$z11 = _user$project$Ui_Elevation$z(11);
+var _user$project$Ui_Elevation$z10 = _user$project$Ui_Elevation$z(10);
+var _user$project$Ui_Elevation$z9 = _user$project$Ui_Elevation$z(9);
+var _user$project$Ui_Elevation$z8 = _user$project$Ui_Elevation$z(8);
+var _user$project$Ui_Elevation$z7 = _user$project$Ui_Elevation$z(7);
+var _user$project$Ui_Elevation$z6 = _user$project$Ui_Elevation$z(6);
+var _user$project$Ui_Elevation$z5 = _user$project$Ui_Elevation$z(5);
+var _user$project$Ui_Elevation$z4 = _user$project$Ui_Elevation$z(4);
+var _user$project$Ui_Elevation$z3 = _user$project$Ui_Elevation$z(3);
+var _user$project$Ui_Elevation$z2 = _user$project$Ui_Elevation$z(2);
+var _user$project$Ui_Elevation$z1 = _user$project$Ui_Elevation$z(1);
+var _user$project$Ui_Elevation$z0 = _user$project$Ui_Elevation$z(0);

@@ -1,0 +1,137 @@
+var _abadi199$elm_input_extra$MultiSelect$defaultOptions = function (onChange) {
+	return {
+		items: {ctor: '[]'},
+		onChange: onChange
+	};
+};
+var _abadi199$elm_input_extra$MultiSelect$Item = F3(
+	function (a, b, c) {
+		return {value: a, text: b, enabled: c};
+	});
+var _abadi199$elm_input_extra$MultiSelect$Options = F2(
+	function (a, b) {
+		return {items: a, onChange: b};
+	});
+var _abadi199$elm_input_extra$MultiSelect$Option = F3(
+	function (a, b, c) {
+		return {value: a, text: b, selected: c};
+	});
+var _abadi199$elm_input_extra$MultiSelect$optionDecoder = A4(
+	_elm_lang$core$Json_Decode$map3,
+	_abadi199$elm_input_extra$MultiSelect$Option,
+	A2(_elm_lang$core$Json_Decode$field, 'value', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'text', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'selected', _elm_lang$core$Json_Decode$bool));
+var _abadi199$elm_input_extra$MultiSelect$optionsDecoder = function () {
+	var loop = F2(
+		function (idx, xs) {
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				function (_p0) {
+					return A2(
+						_elm_lang$core$Maybe$withDefault,
+						_elm_lang$core$Json_Decode$succeed(xs),
+						A2(
+							_elm_lang$core$Maybe$map,
+							function (x) {
+								return A2(
+									loop,
+									idx + 1,
+									{ctor: '::', _0: x, _1: xs});
+							},
+							_p0));
+				},
+				_elm_lang$core$Json_Decode$maybe(
+					A2(
+						_elm_lang$core$Json_Decode$field,
+						_elm_lang$core$Basics$toString(idx),
+						_abadi199$elm_input_extra$MultiSelect$optionDecoder)));
+		});
+	return A2(
+		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$List$reverse,
+		A2(
+			_elm_lang$core$Json_Decode$field,
+			'options',
+			A2(
+				loop,
+				0,
+				{ctor: '[]'})));
+}();
+var _abadi199$elm_input_extra$MultiSelect$selectedOptionsDecoder = function () {
+	var filterSelected = function (options) {
+		return A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.value;
+			},
+			A2(
+				_elm_lang$core$List$filter,
+				function (_) {
+					return _.selected;
+				},
+				options));
+	};
+	return A2(
+		_elm_lang$core$Json_Decode$map,
+		filterSelected,
+		A2(_elm_lang$core$Json_Decode$field, 'target', _abadi199$elm_input_extra$MultiSelect$optionsDecoder));
+}();
+var _abadi199$elm_input_extra$MultiSelect$onChange = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _abadi199$elm_input_extra$MultiSelect$selectedOptionsDecoder));
+};
+var _abadi199$elm_input_extra$MultiSelect$multiSelect = F3(
+	function (options, attributes, currentValue) {
+		var isSelected = function (value) {
+			return A2(
+				_elm_lang$core$List$any,
+				F2(
+					function (x, y) {
+						return _elm_lang$core$Native_Utils.eq(x, y);
+					})(value),
+				currentValue);
+		};
+		var toOption = function (_p1) {
+			var _p2 = _p1;
+			var _p3 = _p2.value;
+			return A2(
+				_elm_lang$html$Html$option,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$value(_p3),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$selected(
+							isSelected(_p3)),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$disabled(!_p2.enabled),
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(_p2.text),
+					_1: {ctor: '[]'}
+				});
+		};
+		return A2(
+			_elm_lang$html$Html$select,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				attributes,
+				{
+					ctor: '::',
+					_0: _abadi199$elm_input_extra$MultiSelect$onChange(options.onChange),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$multiple(true),
+						_1: {ctor: '[]'}
+					}
+				}),
+			A2(_elm_lang$core$List$map, toOption, options.items));
+	});

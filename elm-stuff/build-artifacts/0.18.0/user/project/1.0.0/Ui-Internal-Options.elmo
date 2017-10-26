@@ -1,0 +1,346 @@
+var _user$project$Ui_Internal_Options$cssVariables = function (summary) {
+	var styleNodeBlock = A2(
+		_elm_lang$core$String$join,
+		'\n',
+		A2(
+			_elm_lang$core$List$map,
+			function (_p0) {
+				var _p1 = _p0;
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					_p1._0,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						': ',
+						A2(_elm_lang$core$Basics_ops['++'], _p1._1, ' !important;')));
+			},
+			summary.vars));
+	var hash = function (str) {
+		return A2(
+			F2(
+				function (x, y) {
+					return A2(_elm_lang$core$Basics_ops['++'], x, y);
+				}),
+			'elm-mdc-ripple-style--',
+			_elm_lang$core$String$fromList(
+				A2(
+					_elm_lang$core$List$filter,
+					_elm_lang$core$Char$isDigit,
+					_elm_lang$core$String$toList(str))));
+	};
+	var $class = hash(styleNodeBlock);
+	var styleNodeText = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'.',
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			$class,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				' {',
+				A2(_elm_lang$core$Basics_ops['++'], styleNodeBlock, ' }'))));
+	var styleNode = A3(
+		_elm_lang$html$Html$node,
+		'style',
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$type_('text/css'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(styleNodeText),
+			_1: {ctor: '[]'}
+		});
+	return {ctor: '_Tuple2', _0: $class, _1: styleNode};
+};
+var _user$project$Ui_Internal_Options$addAttributes = F2(
+	function (summary, attrs) {
+		return A2(
+			_elm_lang$core$Basics_ops['++'],
+			summary.attrs,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(summary.css),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class(
+							A2(_elm_lang$core$String$join, ' ', summary.classes)),
+						_1: {ctor: '[]'}
+					}
+				},
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					attrs,
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						summary.internal,
+						_user$project$Ui_Dispatch$toAttributes(summary.dispatch)))));
+	});
+var _user$project$Ui_Internal_Options$collect1_ = F2(
+	function (options, acc) {
+		var _p2 = options;
+		switch (_p2.ctor) {
+			case 'Class':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						classes: {ctor: '::', _0: _p2._0, _1: acc.classes}
+					});
+			case 'CSS':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						css: {ctor: '::', _0: _p2._0, _1: acc.css}
+					});
+			case 'Var':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						vars: {ctor: '::', _0: _p2._0, _1: acc.vars}
+					});
+			case 'Attribute':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						attrs: {ctor: '::', _0: _p2._0, _1: acc.attrs}
+					});
+			case 'Internal':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						internal: {ctor: '::', _0: _p2._0, _1: acc.internal}
+					});
+			case 'Listener':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						dispatch: A4(_user$project$Ui_Dispatch$add, _p2._0, _p2._1, _p2._2, acc.dispatch)
+					});
+			case 'Many':
+				return A3(_elm_lang$core$List$foldl, _user$project$Ui_Internal_Options$collect1_, acc, _p2._0);
+			case 'Lift':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						dispatch: A2(_user$project$Ui_Dispatch$setDecoder, _p2._0, acc.dispatch)
+					});
+			case 'Set':
+				return acc;
+			default:
+				return acc;
+		}
+	});
+var _user$project$Ui_Internal_Options$collect1 = F2(
+	function (option, acc) {
+		var _p3 = option;
+		switch (_p3.ctor) {
+			case 'Class':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						classes: {ctor: '::', _0: _p3._0, _1: acc.classes}
+					});
+			case 'CSS':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						css: {ctor: '::', _0: _p3._0, _1: acc.css}
+					});
+			case 'Var':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						vars: {ctor: '::', _0: _p3._0, _1: acc.vars}
+					});
+			case 'Attribute':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						attrs: {ctor: '::', _0: _p3._0, _1: acc.attrs}
+					});
+			case 'Internal':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						internal: {ctor: '::', _0: _p3._0, _1: acc.internal}
+					});
+			case 'Many':
+				return A3(_elm_lang$core$List$foldl, _user$project$Ui_Internal_Options$collect1, acc, _p3._0);
+			case 'Set':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						config: _p3._0(acc.config)
+					});
+			case 'Listener':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						dispatch: A4(_user$project$Ui_Dispatch$add, _p3._0, _p3._1, _p3._2, acc.dispatch)
+					});
+			case 'Lift':
+				return _elm_lang$core$Native_Utils.update(
+					acc,
+					{
+						dispatch: A2(_user$project$Ui_Dispatch$setDecoder, _p3._0, acc.dispatch)
+					});
+			default:
+				return acc;
+		}
+	});
+var _user$project$Ui_Internal_Options$recollect = _elm_lang$core$List$foldl(_user$project$Ui_Internal_Options$collect1);
+var _user$project$Ui_Internal_Options$apply = F4(
+	function (summary, ctor, options, attrs) {
+		return ctor(
+			A2(
+				_user$project$Ui_Internal_Options$addAttributes,
+				A2(_user$project$Ui_Internal_Options$recollect, summary, options),
+				attrs));
+	});
+var _user$project$Ui_Internal_Options$Summary = F7(
+	function (a, b, c, d, e, f, g) {
+		return {classes: a, css: b, vars: c, attrs: d, internal: e, dispatch: f, config: g};
+	});
+var _user$project$Ui_Internal_Options$collect = function (_p4) {
+	return _user$project$Ui_Internal_Options$recollect(
+		A7(
+			_user$project$Ui_Internal_Options$Summary,
+			{ctor: '[]'},
+			{ctor: '[]'},
+			{ctor: '[]'},
+			{ctor: '[]'},
+			{ctor: '[]'},
+			_user$project$Ui_Dispatch$defaultConfig,
+			_p4));
+};
+var _user$project$Ui_Internal_Options$collect_ = A2(
+	_elm_lang$core$List$foldl,
+	_user$project$Ui_Internal_Options$collect1_,
+	A7(
+		_user$project$Ui_Internal_Options$Summary,
+		{ctor: '[]'},
+		{ctor: '[]'},
+		{ctor: '[]'},
+		{ctor: '[]'},
+		{ctor: '[]'},
+		_user$project$Ui_Dispatch$defaultConfig,
+		{ctor: '_Tuple0'}));
+var _user$project$Ui_Internal_Options$None = {ctor: 'None'};
+var _user$project$Ui_Internal_Options$Lift = function (a) {
+	return {ctor: 'Lift', _0: a};
+};
+var _user$project$Ui_Internal_Options$Listener = F3(
+	function (a, b, c) {
+		return {ctor: 'Listener', _0: a, _1: b, _2: c};
+	});
+var _user$project$Ui_Internal_Options$on1 = F3(
+	function (event, lift, m) {
+		return A3(
+			_user$project$Ui_Internal_Options$Listener,
+			event,
+			_elm_lang$core$Maybe$Nothing,
+			A2(
+				_elm_lang$core$Json_Decode$map,
+				lift,
+				_elm_lang$core$Json_Decode$succeed(m)));
+	});
+var _user$project$Ui_Internal_Options$Set = function (a) {
+	return {ctor: 'Set', _0: a};
+};
+var _user$project$Ui_Internal_Options$option = _user$project$Ui_Internal_Options$Set;
+var _user$project$Ui_Internal_Options$Many = function (a) {
+	return {ctor: 'Many', _0: a};
+};
+var _user$project$Ui_Internal_Options$applyContainer = F3(
+	function (summary, ctor, options) {
+		return A4(
+			_user$project$Ui_Internal_Options$apply,
+			_elm_lang$core$Native_Utils.update(
+				summary,
+				{
+					dispatch: _user$project$Ui_Dispatch$clear(summary.dispatch),
+					attrs: {ctor: '[]'},
+					internal: {ctor: '[]'},
+					config: {ctor: '_Tuple0'}
+				}),
+			ctor,
+			{
+				ctor: '::',
+				_0: _user$project$Ui_Internal_Options$Many(summary.config.container),
+				_1: options
+			},
+			{ctor: '[]'});
+	});
+var _user$project$Ui_Internal_Options$applyInput = F3(
+	function (summary, ctor, options) {
+		return A4(
+			_user$project$Ui_Internal_Options$apply,
+			_elm_lang$core$Native_Utils.update(
+				summary,
+				{
+					classes: {ctor: '[]'},
+					css: {ctor: '[]'},
+					config: {ctor: '_Tuple0'}
+				}),
+			ctor,
+			{
+				ctor: '::',
+				_0: _user$project$Ui_Internal_Options$Many(summary.config.input),
+				_1: options
+			},
+			{ctor: '[]'});
+	});
+var _user$project$Ui_Internal_Options$input = function (_p5) {
+	return _user$project$Ui_Internal_Options$option(
+		F2(
+			function (style, config) {
+				return _elm_lang$core$Native_Utils.update(
+					config,
+					{
+						input: {
+							ctor: '::',
+							_0: _user$project$Ui_Internal_Options$Many(style),
+							_1: config.input
+						}
+					});
+			})(_p5));
+};
+var _user$project$Ui_Internal_Options$container = function (_p6) {
+	return _user$project$Ui_Internal_Options$option(
+		F2(
+			function (style, config) {
+				return _elm_lang$core$Native_Utils.update(
+					config,
+					{
+						container: {
+							ctor: '::',
+							_0: _user$project$Ui_Internal_Options$Many(style),
+							_1: config.container
+						}
+					});
+			})(_p6));
+};
+var _user$project$Ui_Internal_Options$Internal = function (a) {
+	return {ctor: 'Internal', _0: a};
+};
+var _user$project$Ui_Internal_Options$attribute = _user$project$Ui_Internal_Options$Internal;
+var _user$project$Ui_Internal_Options$Attribute = function (a) {
+	return {ctor: 'Attribute', _0: a};
+};
+var _user$project$Ui_Internal_Options$Var = function (a) {
+	return {ctor: 'Var', _0: a};
+};
+var _user$project$Ui_Internal_Options$variable = F2(
+	function (k, v) {
+		return _user$project$Ui_Internal_Options$Var(
+			{ctor: '_Tuple2', _0: k, _1: v});
+	});
+var _user$project$Ui_Internal_Options$CSS = function (a) {
+	return {ctor: 'CSS', _0: a};
+};
+var _user$project$Ui_Internal_Options$Class = function (a) {
+	return {ctor: 'Class', _0: a};
+};

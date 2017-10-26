@@ -1,0 +1,22 @@
+var _user$project$Ui_Internal_Ripple$defaultGeometry = {
+	isSurfaceDisabled: false,
+	event: {type_: '', pageX: 0, pageY: 0},
+	frame: {width: 0, height: 0, left: 0, top: 0}
+};
+var _user$project$Ui_Internal_Ripple$Geometry = F3(
+	function (a, b, c) {
+		return {isSurfaceDisabled: a, event: b, frame: c};
+	});
+var _user$project$Ui_Internal_Ripple$AnimationEnd = F2(
+	function (a, b) {
+		return {ctor: 'AnimationEnd', _0: a, _1: b};
+	});
+var _user$project$Ui_Internal_Ripple$Deactivate = function (a) {
+	return {ctor: 'Deactivate', _0: a};
+};
+var _user$project$Ui_Internal_Ripple$Activate = F3(
+	function (a, b, c) {
+		return {ctor: 'Activate', _0: a, _1: b, _2: c};
+	});
+var _user$project$Ui_Internal_Ripple$Blur = {ctor: 'Blur'};
+var _user$project$Ui_Internal_Ripple$Focus = {ctor: 'Focus'};

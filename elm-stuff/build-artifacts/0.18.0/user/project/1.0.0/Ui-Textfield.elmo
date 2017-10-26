@@ -1,0 +1,1170 @@
+var _user$project$Ui_Textfield$onCurrencyInput = function (toMsg) {
+	var filterValue = function (str) {
+		var strLen = function (_p0) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				0,
+				A2(
+					_elm_lang$core$Maybe$map,
+					_elm_lang$core$String$length,
+					_elm_lang$core$List$head(
+						A2(_elm_lang$core$String$split, ',', _p0))));
+		};
+		var replaced = A3(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[\\s,.]'),
+			function (_p1) {
+				return '';
+			});
+		var allDigits = function (_p2) {
+			return A2(
+				_elm_lang$core$List$all,
+				_elm_lang$core$Char$isDigit,
+				_elm_lang$core$String$toList(
+					replaced(_p2)));
+		};
+		var dots = A2(_elm_lang$core$String$indexes, '.', str);
+		var commas = A2(_elm_lang$core$String$indexes, ',', str);
+		var commasAndDots = _elm_lang$core$List$length(commas) + _elm_lang$core$List$length(dots);
+		return ((_elm_lang$core$Native_Utils.cmp(commasAndDots, 1) < 1) && (allDigits(str) && (_elm_lang$core$Native_Utils.cmp(
+			strLen(str),
+			12) < 0))) ? _elm_lang$core$Json_Decode$succeed(
+			_elm_lang$core$Maybe$Just(str)) : _elm_lang$core$Json_Decode$succeed(_elm_lang$core$Maybe$Nothing);
+	};
+	var decoder = A2(
+		_elm_lang$core$Json_Decode$map,
+		toMsg,
+		A2(_elm_lang$core$Json_Decode$andThen, filterValue, _elm_lang$html$Html_Events$targetValue));
+	return A2(_elm_lang$html$Html_Events$on, 'input', decoder);
+};
+var _user$project$Ui_Textfield$getWidth = function (config) {
+	return config.fullWidth ? '100%' : A3(
+		_elm_lang$core$Basics$flip,
+		F2(
+			function (x, y) {
+				return A2(_elm_lang$core$Basics_ops['++'], x, y);
+			}),
+		'px',
+		_elm_lang$core$Basics$toString(config.width));
+};
+var _user$project$Ui_Textfield$viewReadonly = F3(
+	function (value_, model, config) {
+		var extraInside = A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (e) {
+					return A2(_elm_lang$core$Basics_ops['++'], ' ', e);
+				},
+				config.extraInside));
+		var extra = A2(_elm_lang$core$Maybe$withDefault, '', config.extra);
+		var simpleStyle = {labelBottom: '8px', labelFontSize: '16px', height: '48px', fontSize: '16px'};
+		var asTitleStyle = {labelBottom: '24px', labelFontSize: '16px', height: '56px', fontSize: '34px'};
+		var st = config.asTitle ? asTitleStyle : simpleStyle;
+		var value = A2(
+			_elm_lang$core$Maybe$withDefault,
+			A2(_elm_lang$core$Maybe$withDefault, '', config.defaultValue),
+			value_);
+		var intValue = A2(
+			_elm_lang$core$Result$withDefault,
+			0,
+			_elm_lang$core$String$toInt(value));
+		var floatValue = _elm_lang$core$Basics$toFloat(intValue);
+		var pl = A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				A2(_elm_lang$core$Basics$flip, _user$project$Utils_General$pluralize, intValue),
+				config.plural));
+		var displayValue = value;
+		var divHtml = A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'font-size', _1: st.fontSize},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'width',
+								_1: _user$project$Ui_Textfield$getWidth(config)
+							},
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$classList(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'mdc-textfield__input', _1: true},
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(_elm_lang$core$Basics_ops['++'], displayValue, extraInside)),
+				_1: {ctor: '[]'}
+			});
+		var contentHtml = divHtml;
+		var isFocused = model.isFocused && (!config.disabled);
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'mdc-textfield mdc-textfield--upgraded', _1: true},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'mdc-textfield--focused', _1: isFocused},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'mdc-textfield--disabled', _1: config.disabled},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'ui-textfield--readonly', _1: config.readonly},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'mdc-textfield--fullwidth', _1: false},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'mdc-textfield--invalid', _1: config.invalid},
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$style(
+								{
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'height', _1: st.height},
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'width',
+											_1: _user$project$Ui_Textfield$getWidth(config)
+										},
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: contentHtml,
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$label,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$classList(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'mdc-textfield__label mdc-typography', _1: true},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'mdc-textfield__label--float-above', _1: true},
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'bottom', _1: st.labelBottom},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'font-size', _1: st.labelFontSize},
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								function () {
+									var _p3 = config.labelText;
+									if (_p3.ctor === 'Just') {
+										return {
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(_p3._0),
+											_1: {ctor: '[]'}
+										};
+									} else {
+										return {ctor: '[]'};
+									}
+								}()),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$span,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'float', _1: 'right'},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'position', _1: 'absolute'},
+													_1: {
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: 'right', _1: '0'},
+														_1: {
+															ctor: '::',
+															_0: {ctor: '_Tuple2', _0: 'bottom', _1: '10px'},
+															_1: {
+																ctor: '::',
+																_0: {ctor: '_Tuple2', _0: 'height', _1: '24px'},
+																_1: {
+																	ctor: '::',
+																	_0: {ctor: '_Tuple2', _0: 'font-family', _1: 'Roboto'},
+																	_1: {
+																		ctor: '::',
+																		_0: {ctor: '_Tuple2', _0: 'font-size', _1: '34px'},
+																		_1: {
+																			ctor: '::',
+																			_0: {ctor: '_Tuple2', _0: 'line-height', _1: '15px'},
+																			_1: {
+																				ctor: '::',
+																				_0: {ctor: '_Tuple2', _0: 'color', _1: 'rgba(0, 0, 0, 0.38)'},
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											A2(_elm_lang$core$Basics_ops['++'], extra, pl)),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('mdc-textfield__bottom-line'),
+											_1: {ctor: '[]'}
+										},
+										{ctor: '[]'}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Ui_Textfield$maskedInputOptions = function (config) {
+	var mask = A2(_elm_lang$core$Maybe$withDefault, '', config.mask);
+	var defaultOptions = A2(_abadi199$elm_input_extra$MaskedInput_Text$defaultOptions, _user$project$Ui_Internal_Textfield$Input, _user$project$Ui_Internal_Textfield$InputStateChanged);
+	return _elm_lang$core$Native_Utils.update(
+		defaultOptions,
+		{
+			pattern: mask,
+			hasFocus: _elm_lang$core$Maybe$Just(_user$project$Ui_Internal_Textfield$FocusChanged)
+		});
+};
+var _user$project$Ui_Textfield$view = F3(
+	function (value_, model, config) {
+		var errorClasses = {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'mdc-textfield-helptext mdc-textfield-helptext--validation-msg', _1: true},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'mdc-textfield-helptext--persistent', _1: true},
+				_1: {ctor: '[]'}
+			}
+		};
+		var extraInside = A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (e) {
+					return A2(_elm_lang$core$Basics_ops['++'], ' ', e);
+				},
+				config.extraInside));
+		var extra = A2(_elm_lang$core$Maybe$withDefault, '', config.extra);
+		var simpleStyle = {labelBottom: '8px', labelFontSize: '16px', height: '48px', fontSize: '16px'};
+		var value = A2(
+			_elm_lang$core$Maybe$withDefault,
+			A2(
+				_elm_lang$core$Maybe$withDefault,
+				A2(_elm_lang$core$Maybe$withDefault, '', config.defaultValue),
+				config.value),
+			value_);
+		var intValue = A2(
+			_elm_lang$core$Result$withDefault,
+			0,
+			_elm_lang$core$String$toInt(value));
+		var floatValue = _elm_lang$core$Basics$toFloat(intValue);
+		var displayValue = config.numbered ? A2(_cuducos$elm_format_number$FormatNumber$format, _user$project$Utils_General$rusLocale, floatValue) : (config.asCurrency ? A2(_elm_lang$core$Maybe$withDefault, '', model.displayCurrencyValue) : value);
+		var asTitleStyle = {
+			labelBottom: (model.isFocused || (!_elm_lang$core$Native_Utils.eq(displayValue, ''))) ? '24px' : '8px',
+			labelFontSize: (model.isFocused || (!_elm_lang$core$Native_Utils.eq(displayValue, ''))) ? '16px' : '34px',
+			height: '56px',
+			fontSize: '34px'
+		};
+		var st = config.asTitle ? asTitleStyle : simpleStyle;
+		var currencyInput = A2(
+			_elm_lang$html$Html$input,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$type_('text'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'font-size', _1: st.fontSize},
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'mdc-textfield__input', _1: true},
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html_Events$on,
+								'focus',
+								_elm_lang$core$Json_Decode$succeed(_user$project$Ui_Internal_Textfield$Focus)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onBlur(_user$project$Ui_Internal_Textfield$Blur),
+								_1: {
+									ctor: '::',
+									_0: _user$project$Ui_Textfield$onCurrencyInput(_user$project$Ui_Internal_Textfield$CurrencyInput),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$value(
+											A2(_elm_lang$core$Maybe$withDefault, '', model.displayCurrencyValue)),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$tabindex(config.tabindex),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{ctor: '[]'});
+		var inputHtml = A2(
+			_elm_lang$html$Html$input,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$type_('text'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'font-size', _1: st.fontSize},
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'mdc-textfield__input', _1: true},
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html_Events$on,
+								'focus',
+								_elm_lang$core$Json_Decode$succeed(_user$project$Ui_Internal_Textfield$Focus)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onBlur(_user$project$Ui_Internal_Textfield$Blur),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onInput(_user$project$Ui_Internal_Textfield$Input),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html_Events$on,
+											'change',
+											_elm_lang$core$Json_Decode$succeed(_user$project$Ui_Internal_Textfield$SubmitText)),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$value(displayValue),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$tabindex(config.tabindex),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{ctor: '[]'});
+		var divHtml = A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'font-size', _1: st.fontSize},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'width',
+								_1: _user$project$Ui_Textfield$getWidth(config)
+							},
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$classList(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'mdc-textfield__input', _1: true},
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(_elm_lang$core$Basics_ops['++'], displayValue, extraInside)),
+				_1: {ctor: '[]'}
+			});
+		var pl = A2(
+			_elm_lang$core$Maybe$withDefault,
+			'',
+			A2(
+				_elm_lang$core$Maybe$map,
+				A2(_elm_lang$core$Basics$flip, _user$project$Utils_General$pluralize, intValue),
+				config.plural));
+		var maskedInputHtml = A4(
+			_abadi199$elm_input_extra$MaskedInput_Text$input,
+			_user$project$Ui_Textfield$maskedInputOptions(config),
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$classList(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'mdc-textfield__input maskedInputHtml', _1: true},
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html_Events$on,
+						'change',
+						_elm_lang$core$Json_Decode$succeed(_user$project$Ui_Internal_Textfield$SubmitText)),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html_Events$on,
+							'click',
+							A2(_elm_lang$core$Json_Decode$map, _user$project$Ui_Internal_Textfield$InputClick, _user$project$Ui_Internal_Textfield$geometryDecoder)),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html_Events$on,
+								'focus',
+								_elm_lang$core$Json_Decode$succeed(_user$project$Ui_Internal_Textfield$Focus)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onBlur(_user$project$Ui_Internal_Textfield$Blur),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'font-size', _1: st.fontSize},
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$tabindex(config.tabindex),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			model.maskedState,
+			value);
+		var contentHtml = config.readonly ? divHtml : ((!_elm_lang$core$Native_Utils.eq(config.mask, _elm_lang$core$Maybe$Nothing)) ? maskedInputHtml : (_elm_lang$core$Native_Utils.eq(config.asCurrency, true) ? currencyInput : inputHtml));
+		var isDirty = model.isDirty || ((!_elm_lang$core$Native_Utils.eq(config.defaultValue, _elm_lang$core$Maybe$Nothing)) || (!_elm_lang$core$Native_Utils.eq(value_, _elm_lang$core$Maybe$Nothing)));
+		var isFocused = model.isFocused && (!config.disabled);
+		return A2(
+			_elm_lang$html$Html$div,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'mdc-textfield mdc-textfield--upgraded', _1: true},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'mdc-textfield--focused', _1: isFocused},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'mdc-textfield--disabled', _1: config.disabled},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'ui-textfield--readonly', _1: config.readonly},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'mdc-textfield--fullwidth', _1: false},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'mdc-textfield--invalid', _1: config.invalid},
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onFocus(_user$project$Ui_Internal_Textfield$Focus),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onBlur(_user$project$Ui_Internal_Textfield$Blur),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'height', _1: st.height},
+											_1: {
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'position', _1: 'initial'},
+												_1: {
+													ctor: '::',
+													_0: {
+														ctor: '_Tuple2',
+														_0: 'width',
+														_1: _user$project$Ui_Textfield$getWidth(config)
+													},
+													_1: {ctor: '[]'}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{
+						ctor: '::',
+						_0: contentHtml,
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$label,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$classList(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'mdc-textfield__label mdc-typography', _1: true},
+											_1: {
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple2',
+													_0: 'mdc-textfield__label--float-above',
+													_1: isFocused || (_elm_lang$core$Native_Utils.cmp(
+														_elm_lang$core$String$length(displayValue),
+														0) > 0)
+												},
+												_1: {ctor: '[]'}
+											}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'bottom', _1: st.labelBottom},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'font-size', _1: st.labelFontSize},
+													_1: {ctor: '[]'}
+												}
+											}),
+										_1: {ctor: '[]'}
+									}
+								},
+								function () {
+									var _p4 = config.labelText;
+									if (_p4.ctor === 'Just') {
+										return {
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													_p4._0,
+													config.required ? ' *' : '')),
+											_1: {ctor: '[]'}
+										};
+									} else {
+										return {ctor: '[]'};
+									}
+								}()),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$span,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$style(
+											{
+												ctor: '::',
+												_0: {ctor: '_Tuple2', _0: 'float', _1: 'right'},
+												_1: {
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'position', _1: 'absolute'},
+													_1: {
+														ctor: '::',
+														_0: {ctor: '_Tuple2', _0: 'right', _1: '0'},
+														_1: {
+															ctor: '::',
+															_0: {ctor: '_Tuple2', _0: 'bottom', _1: '10px'},
+															_1: {
+																ctor: '::',
+																_0: {ctor: '_Tuple2', _0: 'height', _1: '24px'},
+																_1: {
+																	ctor: '::',
+																	_0: {ctor: '_Tuple2', _0: 'font-family', _1: 'Roboto'},
+																	_1: {
+																		ctor: '::',
+																		_0: {ctor: '_Tuple2', _0: 'font-size', _1: '34px'},
+																		_1: {
+																			ctor: '::',
+																			_0: {ctor: '_Tuple2', _0: 'line-height', _1: '15px'},
+																			_1: {
+																				ctor: '::',
+																				_0: {ctor: '_Tuple2', _0: 'color', _1: 'rgba(0, 0, 0, 0.38)'},
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											A2(_elm_lang$core$Basics_ops['++'], extra, pl)),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('mdc-textfield__bottom-line'),
+											_1: {ctor: '[]'}
+										},
+										{ctor: '[]'}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$classList(errorClasses),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple2',
+											_0: 'max-width',
+											_1: _user$project$Ui_Textfield$getWidth(config)
+										},
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(config.errorText),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Ui_Textfield$render = F2(
+	function (model, config) {
+		return A3(_user$project$Ui_Textfield$view, config.value, model, config);
+	});
+var _user$project$Ui_Textfield$replaceSpaces = A3(
+	_elm_lang$core$Regex$replace,
+	_elm_lang$core$Regex$All,
+	_elm_lang$core$Regex$regex('\\s'),
+	function (_p5) {
+		return '';
+	});
+var _user$project$Ui_Textfield$calculateCurrencyValues = function (str) {
+	var toCopecks = F2(
+		function (x, y) {
+			return x * y;
+		})(100);
+	var stringToFloat = function (_p6) {
+		return A2(
+			_elm_lang$core$Result$withDefault,
+			0,
+			_elm_lang$core$String$toFloat(_p6));
+	};
+	var formatted = function (_p7) {
+		return A2(
+			_cuducos$elm_format_number$FormatNumber$format,
+			_user$project$Utils_General$rusLocale,
+			stringToFloat(_p7));
+	};
+	var stringToInt = function (_p8) {
+		return A2(
+			_elm_lang$core$Result$withDefault,
+			0,
+			_elm_lang$core$String$toInt(_p8));
+	};
+	var checkSubmatch = function (submatch) {
+		var _p9 = submatch;
+		_v2_4:
+		do {
+			if (((_p9.ctor === '::') && (_p9._0.ctor === 'Just')) && (_p9._1.ctor === '::')) {
+				if (_p9._1._0.ctor === 'Just') {
+					if (_p9._1._1.ctor === '::') {
+						if (_p9._1._1._0.ctor === 'Just') {
+							if (_p9._1._1._1.ctor === '::') {
+								if (_p9._1._1._1._0.ctor === 'Just') {
+									var _p12 = _p9._1._1._1._0._0;
+									var _p11 = _p9._1._1._0._0;
+									var _p10 = _p9._0._0;
+									var aValue = _elm_lang$core$Basics$toString(
+										stringToInt(_p10));
+									var intValue = stringToInt(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											_p10,
+											A2(_elm_lang$core$Basics_ops['++'], _p11, _p12)));
+									return {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Maybe$Just(intValue),
+										_1: _elm_lang$core$Maybe$Just(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												aValue,
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													',',
+													A2(_elm_lang$core$Basics_ops['++'], _p11, _p12))))
+									};
+								} else {
+									var _p14 = _p9._1._1._0._0;
+									var _p13 = _p9._0._0;
+									var aValue = _elm_lang$core$Basics$toString(
+										stringToInt(_p13));
+									var intValue = _elm_lang$core$Basics$round(
+										toCopecks(
+											stringToFloat(
+												A2(
+													_elm_lang$core$Basics_ops['++'],
+													_p13,
+													A2(_elm_lang$core$Basics_ops['++'], '.', _p14)))));
+									return {
+										ctor: '_Tuple2',
+										_0: _elm_lang$core$Maybe$Just(intValue),
+										_1: _elm_lang$core$Maybe$Just(
+											A2(
+												_elm_lang$core$Basics_ops['++'],
+												aValue,
+												A2(_elm_lang$core$Basics_ops['++'], ',', _p14)))
+									};
+								}
+							} else {
+								break _v2_4;
+							}
+						} else {
+							if ((_p9._1._1._1.ctor === '::') && (_p9._1._1._1._0.ctor === 'Nothing')) {
+								var _p15 = _p9._0._0;
+								var stringValue = A3(
+									_elm_lang$core$Basics$flip,
+									F2(
+										function (x, y) {
+											return A2(_elm_lang$core$Basics_ops['++'], x, y);
+										}),
+									',',
+									_elm_lang$core$Basics$toString(
+										stringToInt(_p15)));
+								var intValue = toCopecks(
+									stringToInt(_p15));
+								return {
+									ctor: '_Tuple2',
+									_0: _elm_lang$core$Maybe$Just(intValue),
+									_1: _elm_lang$core$Maybe$Just(stringValue)
+								};
+							} else {
+								break _v2_4;
+							}
+						}
+					} else {
+						break _v2_4;
+					}
+				} else {
+					if ((((_p9._1._1.ctor === '::') && (_p9._1._1._0.ctor === 'Nothing')) && (_p9._1._1._1.ctor === '::')) && (_p9._1._1._1._0.ctor === 'Nothing')) {
+						var _p16 = _p9._0._0;
+						var stringValue = _elm_lang$core$Basics$toString(
+							stringToInt(_p16));
+						var intValue = toCopecks(
+							stringToInt(_p16));
+						return {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Maybe$Just(intValue),
+							_1: _elm_lang$core$Maybe$Just(stringValue)
+						};
+					} else {
+						break _v2_4;
+					}
+				}
+			} else {
+				break _v2_4;
+			}
+		} while(false);
+		return {ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing};
+	};
+	return A2(
+		_elm_lang$core$Maybe$withDefault,
+		{ctor: '_Tuple2', _0: _elm_lang$core$Maybe$Nothing, _1: _elm_lang$core$Maybe$Nothing},
+		A2(
+			_elm_lang$core$Maybe$map,
+			checkSubmatch,
+			A2(
+				_elm_lang$core$Maybe$map,
+				function (_) {
+					return _.submatches;
+				},
+				_elm_lang$core$List$head(
+					A3(
+						_elm_lang$core$Regex$find,
+						_elm_lang$core$Regex$All,
+						_elm_lang$core$Regex$regex('^(\\d+)([,.])?(\\d)?(\\d?)?'),
+						_user$project$Ui_Textfield$replaceSpaces(str))))));
+};
+var _user$project$Ui_Textfield$defaultConfig = {
+	labelText: _elm_lang$core$Maybe$Nothing,
+	labelFloat: false,
+	value: _elm_lang$core$Maybe$Nothing,
+	defaultValue: _elm_lang$core$Maybe$Nothing,
+	disabled: false,
+	asTitle: false,
+	required: false,
+	type_: _elm_lang$core$Maybe$Just('text'),
+	fullWidth: false,
+	invalid: false,
+	extra: _elm_lang$core$Maybe$Nothing,
+	numbered: false,
+	readonly: false,
+	plural: _elm_lang$core$Maybe$Nothing,
+	extraInside: _elm_lang$core$Maybe$Nothing,
+	mask: _elm_lang$core$Maybe$Nothing,
+	errorText: '',
+	formName: _elm_lang$core$Maybe$Nothing,
+	tabindex: -1,
+	width: 168,
+	asCurrency: false
+};
+var _user$project$Ui_Textfield$withLabel = F2(
+	function (label, config) {
+		return _elm_lang$core$Native_Utils.update(
+			config,
+			{
+				labelText: _elm_lang$core$Maybe$Just(label)
+			});
+	});
+var _user$project$Ui_Textfield$defaultModel = {isFocused: false, isDirty: false, maskedState: _abadi199$elm_input_extra$MaskedInput_Text$initialState, geometry: _elm_lang$core$Maybe$Nothing, displayCurrencyValue: _elm_lang$core$Maybe$Nothing, intValue: _elm_lang$core$Maybe$Nothing};
+var _user$project$Ui_Textfield$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {isFocused: a, isDirty: b, maskedState: c, geometry: d, displayCurrencyValue: e, intValue: f};
+	});
+var _user$project$Ui_Textfield$Config = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return function (l) {
+												return function (m) {
+													return function (n) {
+														return function (o) {
+															return function (p) {
+																return function (q) {
+																	return function (r) {
+																		return function (s) {
+																			return function (t) {
+																				return function (u) {
+																					return {labelText: a, labelFloat: b, value: c, defaultValue: d, disabled: e, asTitle: f, required: g, type_: h, fullWidth: i, invalid: j, extra: k, extraInside: l, numbered: m, readonly: n, plural: o, mask: p, errorText: q, formName: r, tabindex: s, width: t, asCurrency: u};
+																				};
+																			};
+																		};
+																	};
+																};
+															};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _user$project$Ui_Textfield$Changed = function (a) {
+	return {ctor: 'Changed', _0: a};
+};
+var _user$project$Ui_Textfield$NoChange = {ctor: 'NoChange'};
+var _user$project$Ui_Textfield_ops = _user$project$Ui_Textfield_ops || {};
+_user$project$Ui_Textfield_ops['!'] = F2(
+	function (m, cs) {
+		return {
+			ctor: '_Tuple3',
+			_0: m,
+			_1: _elm_lang$core$Platform_Cmd$batch(cs),
+			_2: _user$project$Ui_Textfield$NoChange
+		};
+	});
+var _user$project$Ui_Textfield$update = F3(
+	function (msg, model, config) {
+		var formatter = function () {
+			var _p17 = model.displayCurrencyValue;
+			if (_p17.ctor === 'Just') {
+				return A2(_elm_lang$core$String$contains, ',', _p17._0) ? _user$project$Utils_General$rusLocale1 : _user$project$Utils_General$rusLocale;
+			} else {
+				return _user$project$Utils_General$rusLocale;
+			}
+		}();
+		var numerize = A3(
+			_elm_lang$core$Regex$replace,
+			_elm_lang$core$Regex$All,
+			_elm_lang$core$Regex$regex('[^0-9]'),
+			function (_p18) {
+				return '';
+			});
+		var numberedValue = function (str) {
+			return (config.numbered || (!_elm_lang$core$Native_Utils.eq(config.mask, _elm_lang$core$Maybe$Nothing))) ? _elm_lang$core$Maybe$Just(
+				numerize(str)) : _elm_lang$core$Maybe$Just(str);
+		};
+		var _p19 = msg;
+		switch (_p19.ctor) {
+			case 'Input':
+				var _p20 = _p19._0;
+				var dirty = !_elm_lang$core$Native_Utils.eq(
+					_p20,
+					A2(_elm_lang$core$Maybe$withDefault, '', config.defaultValue));
+				return {
+					ctor: '_Tuple3',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{isDirty: dirty}),
+					_1: _elm_lang$core$Platform_Cmd$none,
+					_2: _user$project$Ui_Textfield$Changed(
+						numberedValue(_p20))
+				};
+			case 'SetValue':
+				var dirty = function () {
+					var _p21 = config.defaultValue;
+					if (_p21.ctor === 'Just') {
+						return !_elm_lang$core$Native_Utils.eq(_p21._0, _p19._0);
+					} else {
+						return true;
+					}
+				}();
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{isDirty: dirty}),
+					{ctor: '[]'});
+			case 'CurrencyInput':
+				if (_p19._0.ctor === 'Just') {
+					var _p22 = _user$project$Ui_Textfield$calculateCurrencyValues(_p19._0._0);
+					var intValue = _p22._0;
+					var displayCurrencyValue = _p22._1;
+					return A2(
+						_user$project$Ui_Textfield_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{intValue: intValue, displayCurrencyValue: displayCurrencyValue}),
+						{ctor: '[]'});
+				} else {
+					return A2(
+						_user$project$Ui_Textfield_ops['!'],
+						model,
+						{ctor: '[]'});
+				}
+			case 'Blur':
+				var floatValue = A2(
+					_elm_lang$core$Maybe$withDefault,
+					'',
+					A2(
+						_elm_lang$core$Maybe$map,
+						_cuducos$elm_format_number$FormatNumber$format(formatter),
+						A2(
+							_elm_lang$core$Maybe$map,
+							A2(
+								_elm_lang$core$Basics$flip,
+								F2(
+									function (x, y) {
+										return x / y;
+									}),
+								100),
+							A2(_elm_lang$core$Maybe$map, _elm_lang$core$Basics$toFloat, model.intValue))));
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							isFocused: false,
+							displayCurrencyValue: _elm_lang$core$Maybe$Just(floatValue)
+						}),
+					{ctor: '[]'});
+			case 'Focus':
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							isFocused: true,
+							displayCurrencyValue: _elm_lang$core$Maybe$Just(
+								_user$project$Ui_Textfield$replaceSpaces(
+									A2(_elm_lang$core$Maybe$withDefault, '', model.displayCurrencyValue)))
+						}),
+					{ctor: '[]'});
+			case 'InputClick':
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{
+							geometry: _elm_lang$core$Maybe$Just(_p19._0)
+						}),
+					{ctor: '[]'});
+			case 'InputStateChanged':
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{maskedState: _p19._0}),
+					{ctor: '[]'});
+			case 'FocusChanged':
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					model,
+					{ctor: '[]'});
+			case 'SubmitText':
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					model,
+					{ctor: '[]'});
+			default:
+				return A2(
+					_user$project$Ui_Textfield_ops['!'],
+					model,
+					{ctor: '[]'});
+		}
+	});
+var _user$project$Ui_Textfield$externalUpdate = F4(
+	function (msg, model, textfieldConfig, previousText) {
+		var _p23 = A3(_user$project$Ui_Textfield$update, msg, model, textfieldConfig);
+		var newTextfieldModel = _p23._0;
+		var textfieldEvent = _p23._2;
+		var newText = function () {
+			var _p24 = textfieldEvent;
+			if (_p24.ctor === 'Changed') {
+				return _p24._0;
+			} else {
+				return previousText;
+			}
+		}();
+		return {ctor: '_Tuple2', _0: newTextfieldModel, _1: newText};
+	});

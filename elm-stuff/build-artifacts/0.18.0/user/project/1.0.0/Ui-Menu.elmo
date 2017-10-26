@@ -1,0 +1,326 @@
+var _user$project$Ui_Menu$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: _elm_lang$core$Native_Utils.eq(model.open, true) ? _elm_lang$mouse$Mouse$clicks(_user$project$Ui_Internal_Menu$Click) : _elm_lang$core$Platform_Sub$none,
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Ui_Menu$onSelect = function (msg) {
+	return _elm_lang$html$Html_Events$onClick(msg);
+};
+var _user$project$Ui_Menu$attach = function (lift) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		A2(
+			_elm_lang$core$Json_Decode$map,
+			function (_p0) {
+				return lift(
+					_user$project$Ui_Internal_Menu$Toggle(_p0));
+			},
+			_user$project$Ui_Internal_Menu$decoder));
+};
+var _user$project$Ui_Menu$update = F3(
+	function (fwd, msg, model) {
+		var _p1 = msg;
+		switch (_p1.ctor) {
+			case 'Open':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{open: true}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Close':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{open: false}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Click':
+				var _p2 = model.geometry;
+				if (_p2.ctor === 'Just') {
+					var inside = F2(
+						function (_p4, _p3) {
+							var _p5 = _p4;
+							var _p10 = _p5.y;
+							var _p9 = _p5.x;
+							var _p6 = _p3;
+							var _p8 = _p6.top;
+							var _p7 = _p6.left;
+							return (_elm_lang$core$Native_Utils.cmp(
+								_p7,
+								_elm_lang$core$Basics$toFloat(_p9)) < 1) && ((_elm_lang$core$Native_Utils.cmp(
+								_elm_lang$core$Basics$toFloat(_p9),
+								_p7 + _p6.width) < 1) && ((_elm_lang$core$Native_Utils.cmp(
+								_p8,
+								_elm_lang$core$Basics$toFloat(_p10)) < 1) && (_elm_lang$core$Native_Utils.cmp(
+								_elm_lang$core$Basics$toFloat(_p10),
+								_p8 + _p6.height) < 1)));
+						});
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{open: false}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'Toggle':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							open: true,
+							geometry: _elm_lang$core$Maybe$Just(_p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							geometry: _elm_lang$core$Maybe$Just(_p1._0)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+		}
+	});
+var _user$project$Ui_Menu$defaultModel = {geometry: _elm_lang$core$Maybe$Nothing, open: false, top: 0, left: 0};
+var _user$project$Ui_Menu$classList = _user$project$Utils_Style$mkClassList('ui-menu--');
+var _user$project$Ui_Menu$class = _user$project$Utils_Style$mkClass('ui-menu--');
+var _user$project$Ui_Menu$view = F4(
+	function (lift, _p11, config, items) {
+		var _p12 = _p11;
+		var _p16 = _p12.open;
+		var alignmentStyle = function () {
+			var _p13 = config.alignment;
+			if (_p13.ctor === 'OpenFromTopLeft') {
+				return {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'left', _1: '0px'},
+					_1: {ctor: '[]'}
+				};
+			} else {
+				return {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'left', _1: '-148px'},
+					_1: {ctor: '[]'}
+				};
+			}
+		}();
+		var menuStyle = {
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'width',
+				_1: A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(config.width),
+					'px')
+			},
+			_1: alignmentStyle
+		};
+		var transformOriginStyle = function () {
+			var _p14 = config.alignment;
+			if (_p14.ctor === 'OpenFromTopLeft') {
+				return {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'transform-origin', _1: 'left top 0px'},
+					_1: {ctor: '[]'}
+				};
+			} else {
+				return {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'transform-origin', _1: 'right top 0px'},
+					_1: {ctor: '[]'}
+				};
+			}
+		}();
+		var initOn = function (event) {
+			return A2(
+				_elm_lang$html$Html_Events$on,
+				event,
+				A2(
+					_elm_lang$core$Json_Decode$map,
+					function (_p15) {
+						return lift(
+							_user$project$Ui_Internal_Menu$Init(_p15));
+					},
+					_user$project$Ui_Internal_Menu$decoder));
+		};
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$classList(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'mdc-simple-menu mdc-simple-menu--open', _1: true},
+						_1: {
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'elm-mdc-menu--uninitialized', _1: true},
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: _user$project$Ui_Menu$classList(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'menu', _1: true},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'menu--hidden',
+									_1: (!_p16) || _elm_lang$core$Native_Utils.eq(
+										_elm_lang$core$List$length(items),
+										0)
+								},
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							A2(_elm_lang$core$List$append, transformOriginStyle, menuStyle)),
+						_1: {
+							ctor: '::',
+							_0: initOn('elm-mdc-init'),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _user$project$Ui_Menu$classList(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'inner1', _1: true},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'inner1--hidden', _1: !_p16},
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$style(transformOriginStyle),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _user$project$Ui_Menu$classList(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'inner2', _1: true},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'inner2--hidden', _1: !_p16},
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(transformOriginStyle),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$ul,
+									{
+										ctor: '::',
+										_0: _user$project$Ui_Menu$class('mdc-simple-menu__items mdc-list'),
+										_1: {ctor: '[]'}
+									},
+									items),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			});
+	});
+var _user$project$Ui_Menu$asIcon = F4(
+	function (lift, model, config, items) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'position', _1: 'relative'},
+						_1: {ctor: '[]'}
+					}),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A3(
+					_user$project$Icons_Icon$asButton,
+					'more_vert',
+					{
+						ctor: '::',
+						_0: _user$project$Ui_Menu$attach(lift),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$style(
+								{
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'position', _1: 'absolute'},
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'color', _1: '#000'},
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A4(_user$project$Ui_Menu$view, lift, model, config, items),
+					_1: {ctor: '[]'}
+				}
+			});
+	});
+var _user$project$Ui_Menu$Config = F2(
+	function (a, b) {
+		return {alignment: a, width: b};
+	});
+var _user$project$Ui_Menu$Model = F4(
+	function (a, b, c, d) {
+		return {geometry: a, open: b, top: c, left: d};
+	});
+var _user$project$Ui_Menu$OpenFromTopRight = {ctor: 'OpenFromTopRight'};
+var _user$project$Ui_Menu$OpenFromTopLeft = {ctor: 'OpenFromTopLeft'};
+var _user$project$Ui_Menu$defaultConfig = {alignment: _user$project$Ui_Menu$OpenFromTopLeft, width: 184};

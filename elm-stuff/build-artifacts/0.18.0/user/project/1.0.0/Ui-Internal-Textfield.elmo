@@ -1,0 +1,39 @@
+var _user$project$Ui_Internal_Textfield$Geometry = F2(
+	function (a, b) {
+		return {textfield: a, picker: b};
+	});
+var _user$project$Ui_Internal_Textfield$Element = F4(
+	function (a, b, c, d) {
+		return {offsetTop: a, offsetLeft: b, offsetHeight: c, bounds: d};
+	});
+var _user$project$Ui_Internal_Textfield$element = A5(_elm_lang$core$Json_Decode$map4, _user$project$Ui_Internal_Textfield$Element, _debois$elm_dom$DOM$offsetTop, _debois$elm_dom$DOM$offsetLeft, _debois$elm_dom$DOM$offsetHeight, _debois$elm_dom$DOM$boundingClientRect);
+var _user$project$Ui_Internal_Textfield$geometryDecoder = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$Ui_Internal_Textfield$Geometry,
+	_debois$elm_dom$DOM$target(_user$project$Ui_Internal_Textfield$element),
+	_debois$elm_dom$DOM$target(
+		_debois$elm_dom$DOM$parentElement(
+			_debois$elm_dom$DOM$parentElement(
+				_debois$elm_dom$DOM$nextSibling(_user$project$Ui_Internal_Textfield$element)))));
+var _user$project$Ui_Internal_Textfield$InputStateChanged = function (a) {
+	return {ctor: 'InputStateChanged', _0: a};
+};
+var _user$project$Ui_Internal_Textfield$FocusChanged = function (a) {
+	return {ctor: 'FocusChanged', _0: a};
+};
+var _user$project$Ui_Internal_Textfield$NoOp = {ctor: 'NoOp'};
+var _user$project$Ui_Internal_Textfield$SetValue = function (a) {
+	return {ctor: 'SetValue', _0: a};
+};
+var _user$project$Ui_Internal_Textfield$SubmitText = {ctor: 'SubmitText'};
+var _user$project$Ui_Internal_Textfield$CurrencyInput = function (a) {
+	return {ctor: 'CurrencyInput', _0: a};
+};
+var _user$project$Ui_Internal_Textfield$Input = function (a) {
+	return {ctor: 'Input', _0: a};
+};
+var _user$project$Ui_Internal_Textfield$InputClick = function (a) {
+	return {ctor: 'InputClick', _0: a};
+};
+var _user$project$Ui_Internal_Textfield$Focus = {ctor: 'Focus'};
+var _user$project$Ui_Internal_Textfield$Blur = {ctor: 'Blur'};

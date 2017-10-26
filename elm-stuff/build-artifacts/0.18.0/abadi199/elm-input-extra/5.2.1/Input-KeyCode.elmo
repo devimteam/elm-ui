@@ -1,0 +1,51 @@
+var _abadi199$elm_input_extra$Input_KeyCode$downArrow = 40;
+var _abadi199$elm_input_extra$Input_KeyCode$rightArrow = 39;
+var _abadi199$elm_input_extra$Input_KeyCode$upArrow = 38;
+var _abadi199$elm_input_extra$Input_KeyCode$leftArrow = 37;
+var _abadi199$elm_input_extra$Input_KeyCode$enter = 13;
+var _abadi199$elm_input_extra$Input_KeyCode$tab = 9;
+var _abadi199$elm_input_extra$Input_KeyCode$backspace = 8;
+var _abadi199$elm_input_extra$Input_KeyCode$delete = 46;
+var _abadi199$elm_input_extra$Input_KeyCode$alt = 18;
+var _abadi199$elm_input_extra$Input_KeyCode$ctrl = 17;
+var _abadi199$elm_input_extra$Input_KeyCode$allowedKeyCodes = {
+	ctor: '::',
+	_0: _abadi199$elm_input_extra$Input_KeyCode$leftArrow,
+	_1: {
+		ctor: '::',
+		_0: _abadi199$elm_input_extra$Input_KeyCode$upArrow,
+		_1: {
+			ctor: '::',
+			_0: _abadi199$elm_input_extra$Input_KeyCode$rightArrow,
+			_1: {
+				ctor: '::',
+				_0: _abadi199$elm_input_extra$Input_KeyCode$downArrow,
+				_1: {
+					ctor: '::',
+					_0: _abadi199$elm_input_extra$Input_KeyCode$backspace,
+					_1: {
+						ctor: '::',
+						_0: _abadi199$elm_input_extra$Input_KeyCode$ctrl,
+						_1: {
+							ctor: '::',
+							_0: _abadi199$elm_input_extra$Input_KeyCode$alt,
+							_1: {
+								ctor: '::',
+								_0: _abadi199$elm_input_extra$Input_KeyCode$delete,
+								_1: {
+									ctor: '::',
+									_0: _abadi199$elm_input_extra$Input_KeyCode$tab,
+									_1: {
+										ctor: '::',
+										_0: _abadi199$elm_input_extra$Input_KeyCode$enter,
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};

@@ -1,0 +1,4 @@
+var _user$project$Ui_Typography$pad24 = A2(_user$project$Ui_Options$css, 'padding-bottom', '24px');
+var _user$project$Ui_Typography$pad12 = A2(_user$project$Ui_Options$css, 'padding-bottom', '12px');
+var _user$project$Ui_Typography$pad4 = A2(_user$project$Ui_Options$css, 'padding-bottom', '4px');
+var _user$project$Ui_Typography$headline = _user$project$Ui_Options$cs('header');
