@@ -21,3 +21,8 @@ pad12 =
 pad24 : Property c m
 pad24 =
     css "padding-bottom" "24px"
+
+
+pad26 : Property c m
+pad26 =
+    css "padding-bottom" "26px"
