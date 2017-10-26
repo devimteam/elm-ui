@@ -1,7 +1,0 @@
-var _user$project$Ui_Internal_RadioButton$NoOp = {ctor: 'NoOp'};
-var _user$project$Ui_Internal_RadioButton$SetFocus = function (a) {
-	return {ctor: 'SetFocus', _0: a};
-};
-var _user$project$Ui_Internal_RadioButton$RippleMsg = function (a) {
-	return {ctor: 'RippleMsg', _0: a};
-};
