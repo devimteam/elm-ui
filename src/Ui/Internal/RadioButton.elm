@@ -6,4 +6,5 @@ import Ui.Internal.Ripple as Ripple
 type Msg
     = RippleMsg Ripple.Msg
     | SetFocus Bool
+    | Click
     | NoOp

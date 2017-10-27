@@ -11,7 +11,8 @@ module Ui.RadioButton
         , Model
         , defaultModel
         , update
-          -- RENDER
+        , view2
+        , Config2
         )
 
 import Html.Attributes as Html
@@ -20,11 +21,8 @@ import Json.Decode as Json
 import Ui.Internal.Helpers as Helpers exposing (map1st, map2nd, blurOn, filter, noAttr)
 import Ui.Internal.Options as Internal
 import Ui.Internal.RadioButton exposing (Msg(..))
-import Ui.Options as Options exposing (Style, cs, styled, many, when, maybe)
+import Ui.Options as Options exposing (Style, cs, styled, many, when, maybe, css)
 import Ui.Ripple as Ripple
-
-
--- MODEL
 
 
 type alias Model =
@@ -38,10 +36,6 @@ defaultModel =
     { ripple = Ripple.defaultModel
     , isFocused = False
     }
-
-
-
--- ACTION, UPDATE
 
 
 type alias Msg =
@@ -62,6 +56,9 @@ update lift msg model =
 
         SetFocus focus ->
             ( Just { model | isFocused = focus }, Cmd.none )
+
+        Click ->
+            ( Nothing, Cmd.none )
 
         NoOp ->
             ( Nothing, Cmd.none )
@@ -86,14 +83,10 @@ defaultConfig =
     }
 
 
-{-| TODO
--}
 type alias Property m =
     Options.Property (Config m) m
 
 
-{-| TODO
--}
 disabled : Property m
 disabled =
     Options.many
@@ -104,15 +97,11 @@ disabled =
         ]
 
 
-{-| TODO
--}
 selected : Property m
 selected =
     Internal.option (\config -> { config | value = True })
 
 
-{-| TODO
--}
 name : String -> Property m
 name value =
     Internal.attribute (Html.name value)
@@ -120,6 +109,58 @@ name value =
 
 
 -- VIEW
+
+
+type alias Config2 m =
+    { lift : Msg -> m
+    , labelText : String
+    , checked : Bool
+    }
+
+
+view2 : Config2 m -> Model -> Html m
+view2 { labelText, checked, lift } model =
+    let
+        ({ config } as summary) =
+            Internal.collect defaultConfig []
+
+        ( rippleOptions, rippleStyle ) =
+            Ripple.view True (RippleMsg >> lift) model.ripple [] []
+    in
+        styled div
+            [ cs "mdc-form-field" ]
+            [ styled div
+                [ cs "mdc-radio"
+                , rippleOptions
+                ]
+                [ styled
+                    Html.input
+                    [ cs "mdc-radio__native-control"
+                    , Internal.attribute <| Html.type_ "radio"
+                    , Internal.attribute <| Html.checked checked
+                    , Internal.on1 "focus" lift (SetFocus True)
+                    , Internal.on1 "blur" lift (SetFocus False)
+                    , Options.onWithOptions "click"
+                        { preventDefault = True
+                        , stopPropagation = False
+                        }
+                        (Json.succeed (lift NoOp))
+                    ]
+                    []
+                , styled Html.div
+                    [ cs "mdc-radio__background"
+                    ]
+                    [ styled Html.div [ cs "mdc-radio__inner-circle" ] []
+                    , styled Html.div [ cs "mdc-radio__outer-circle" ] []
+                    ]
+                , rippleStyle
+                ]
+            , styled Html.label
+                [ css "user-select" "none"
+                , Options.onClick (lift Click)
+                ]
+                [ text labelText ]
+            ]
 
 
 view : (Msg -> m) -> Model -> List (Property m) -> List (Html m) -> Html m
