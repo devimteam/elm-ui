@@ -109,3 +109,8 @@ getNthWithDefault n default list =
 formatMoney : Float -> String
 formatMoney amount =
     FormatNumber.format rusLocale amount ++ " ₽"
+
+
+formatMoney1 : Float -> String
+formatMoney1 amount =
+    FormatNumber.format rusLocale1 amount ++ " ₽"
