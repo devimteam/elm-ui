@@ -719,7 +719,7 @@ view value_ model config =
                         , ( "mdc-textfield__bottom-line--active", isFocused )
                         ]
                     , style
-                        [ ( "transform-origin", "80.5px center" )
+                        [ ( "transform-origin", "center" )
                         ]
                     ]
                     []
