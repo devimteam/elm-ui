@@ -428,7 +428,7 @@ viewReadonly value_ model config =
                 , label
                     [ classList
                         [ ( "mdc-textfield__label mdc-typography", True )
-                        , ( "mdc-textfield__label--float-above", True )
+                        , ( "mdc-textfield__label--float-above", isFocused || (String.length displayValue > 0) )
                         ]
                     , style
                         [ ( "bottom", st.labelBottom )
@@ -456,7 +456,12 @@ viewReadonly value_ model config =
                         ]
                     ]
                     [ text <| extra ++ pl ]
-                , div [ class "mdc-textfield__bottom-line" ] []
+                , div
+                    [ classList
+                        [ ( "mdc-textfield__bottom-line", True )
+                        ]
+                    ]
+                    []
                 ]
             ]
 
@@ -708,7 +713,16 @@ view value_ model config =
                         ]
                     ]
                     [ text <| extra ++ pl ]
-                , div [ class "mdc-textfield__bottom-line" ] []
+                , div
+                    [ classList
+                        [ ( "mdc-textfield__bottom-line", True )
+                        , ( "mdc-textfield__bottom-line--active", isFocused )
+                        ]
+                    , style
+                        [ ( "transform-origin", "80.5px center" )
+                        ]
+                    ]
+                    []
                 ]
             , p [ classList errorClasses, style [ ( "max-width", getWidth config ) ] ] [ text (config.errorText) ]
             ]

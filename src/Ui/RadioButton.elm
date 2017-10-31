@@ -144,7 +144,7 @@ view2 { labelText, checked, lift } model =
                         { preventDefault = True
                         , stopPropagation = False
                         }
-                        (Json.succeed (lift NoOp))
+                        (Json.succeed (lift Click))
                     ]
                     []
                 , styled Html.div
