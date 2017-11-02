@@ -79,6 +79,7 @@ type alias Config =
     , tabindex : Int
     , width : Int
     , asCurrency : Bool
+    , maxLength : Maybe Int
     }
 
 
@@ -112,6 +113,7 @@ defaultConfig =
     , tabindex = -1
     , width = 168
     , asCurrency = False
+    , maxLength = Nothing
     }
 
 
@@ -246,8 +248,17 @@ update msg model config =
                 let
                     dirty =
                         str /= (config.defaultValue |> Maybe.withDefault "")
+
+                    cropped =
+                        config.maxLength
+                            |> Maybe.map (flip String.left str)
+                            |> Maybe.withDefault str
                 in
-                    ( { model | isDirty = dirty }, Cmd.none, Changed (numberedValue str) )
+                    ( { model | isDirty = dirty }
+                    , Cmd.none
+                    , Changed
+                        (numberedValue cropped)
+                    )
 
             SetValue str ->
                 let

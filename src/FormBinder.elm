@@ -250,7 +250,6 @@ textfield lift model config =
             { config
                 | invalid = hasError field
                 , value = field.value
-                , required = True
                 , errorText =
                     field.liveError
                         |> Maybe.map getErrorText
