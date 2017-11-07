@@ -1,4 +1,4 @@
-module Select
+module Ui.Select
     exposing
         ( view
         , viewEditable
