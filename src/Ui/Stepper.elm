@@ -1,9 +1,19 @@
-module Ui.Stepper exposing (step, stepLine)
+module Ui.Stepper exposing (step, stepLine, actions)
 
 import Html exposing (Html, div, h1, text, p, span)
 import Html.Attributes as Attrs
 import Svg
 import Svg.Attributes as Svg
+
+
+actions : List (Html msg) -> Html msg
+actions nodes =
+    let
+        class =
+            mkClass "actions--"
+    in
+        div [ class "container" ]
+            nodes
 
 
 step : String -> Int -> Bool -> Html msg

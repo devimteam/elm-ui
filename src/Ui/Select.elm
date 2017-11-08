@@ -153,12 +153,14 @@ view lift model { width, textfieldConfig, selected } htmlItems =
                 [ ( "height", "54px" )
                 , ( "min-height", "54px" )
                 , ( "border-bottom", "1px solid rgba(0, 0, 0, 0.12)" )
-                , ( "padding-bottom"
-                  , if selected == Nothing then
-                        "4px"
-                    else
-                        "0px"
-                  )
+                , ( "width", (toString width) ++ "px" )
+
+                -- , ( "padding-bottom"
+                --   , if selected == Nothing then
+                --         "4px"
+                --     else
+                --         "0px"
+                --   )
                 ]
             ]
             [ div
@@ -166,7 +168,7 @@ view lift model { width, textfieldConfig, selected } htmlItems =
                 , class "ui-select"
                 , style
                     [ ( "position", "relative" )
-                    , ( "width", "inherit" )
+                    , ( "width", (toString width) ++ "px" )
                     , ( "height", "52px" )
                     , ( "display", "inline-flex" )
                     , ( "align-items", "center" )
