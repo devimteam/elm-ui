@@ -75,6 +75,7 @@ type alias Config =
     , plural : Maybe Plural
     , mask : Maybe String
     , errorText : String
+    , helperText : String
     , formName : Maybe String
     , tabindex : Int
     , width : Int
@@ -109,6 +110,7 @@ defaultConfig =
     , extraInside = Nothing
     , mask = Nothing
     , errorText = ""
+    , helperText = ""
     , formName = Nothing
     , tabindex = -1
     , width = 168
@@ -600,6 +602,10 @@ view value_ model config =
             , ( "mdc-textfield-helptext--persistent", True )
             ]
 
+        helperTextClasses =
+            [ ( "mdc-textfield-helptext mdc-textfield-helptext--persistent", True )
+            ]
+
         maskedInputHtml =
             MaskedText.input
                 (maskedInputOptions config)
@@ -737,6 +743,7 @@ view value_ model config =
                     []
                 ]
             , p [ classList errorClasses, style [ ( "max-width", getWidth config ) ] ] [ text (config.errorText) ]
+            , p [ classList helperTextClasses ] [ text (config.helperText) ]
             ]
 
 
