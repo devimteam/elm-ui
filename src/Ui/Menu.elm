@@ -27,6 +27,9 @@ import Ui.Internal.Menu as InternalMenu
         , decoder
         )
 import Mouse
+import Dom
+import Task
+import Dom.Scroll exposing (toTop)
 import Utils.Style exposing (mkClass, mkClassList)
 import Icons.Icon as Icon
 
@@ -86,9 +89,12 @@ type alias Msg =
 -- UPDATE
 
 
-update : (Msg -> m) -> Msg -> Model -> ( Model, Cmd m )
+update : (Msg -> m) -> Msg -> Model -> ( Model, Cmd Msg )
 update fwd msg model =
     case msg of
+        ScrollToTopResult result ->
+            ( model, Cmd.none )
+
         Open ->
             ( { model | open = True }, Cmd.none )
 
@@ -104,11 +110,14 @@ update fwd msg model =
                                 && (toFloat x <= left + width)
                                 && (top <= toFloat y)
                                 && (toFloat y <= top + height)
+
+                        task =
+                            toTop "menu" |> Task.attempt ScrollToTopResult
                     in
                         -- if inside pos geometry.menu.bounds then
                         --     ( model, Cmd.none )
                         -- else
-                        ( { model | open = False }, Cmd.none )
+                        ({ model | open = False }) ! [ task ]
 
                 Nothing ->
                     ( model, Cmd.none )
@@ -179,6 +188,7 @@ view lift { open, left, top } config items =
                 [ ( "mdc-simple-menu mdc-simple-menu--open", True )
                 , ( "elm-mdc-menu--uninitialized", True )
                 ]
+            , Attrs.id "menu"
             , classList
                 [ ( "menu", True )
                 , ( "menu--hidden", not open || (List.length items == 0) )
@@ -206,6 +216,12 @@ view lift { open, left, top } config items =
 attach : (Msg -> msg) -> Attribute msg
 attach lift =
     Events.on "click" (Json.map (lift << Toggle) decoder)
+
+
+
+-- openOnClick : (Msg -> msg) -> Attribute msg
+-- openOnClick lift =
+--     Events.on "click" (Json.succeed (lift << Open) decoder)
 
 
 onSelect : m -> Attribute m

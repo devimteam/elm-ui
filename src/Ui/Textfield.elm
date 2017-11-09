@@ -622,6 +622,7 @@ view value_ model config =
                 , style [ ( "font-size", st.fontSize ) ]
                 , classList [ ( "mdc-textfield__input", True ) ]
                 , Events.on "focus" (Json.succeed Focus)
+                , Events.on "click" (Json.map InputClick geometryDecoder)
                 , Events.onBlur <| Blur
                 , Events.onInput Input
                 , Events.on "change" (Json.succeed SubmitText)

@@ -8,6 +8,7 @@ module Ui.Internal.Menu
         )
 
 import DOM
+import Dom
 import Json.Decode exposing (..)
 import Mouse
 
@@ -18,6 +19,7 @@ type Msg
     | Toggle Geometry
     | Click Mouse.Position
     | Init Geometry
+    | ScrollToTopResult (Result Dom.Error ())
 
 
 type alias Geometry =
