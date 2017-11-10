@@ -11,6 +11,7 @@ import DOM
 import Dom
 import Json.Decode exposing (..)
 import Mouse
+import Time
 
 
 type Msg
@@ -20,6 +21,7 @@ type Msg
     | Click Mouse.Position
     | Init Geometry
     | ScrollToTopResult (Result Dom.Error ())
+    | CurrentTime Time.Time
 
 
 type alias Geometry =

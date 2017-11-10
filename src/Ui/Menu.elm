@@ -12,6 +12,8 @@ module Ui.Menu
         , onSelect
         , subscriptions
         , attach
+        , init
+        , effects
         )
 
 import Html exposing (Html, text, div, button, Attribute, ul, li)
@@ -29,6 +31,7 @@ import Ui.Internal.Menu as InternalMenu
 import Mouse
 import Dom
 import Task
+import Time exposing (Time)
 import Dom.Scroll exposing (toTop)
 import Utils.Style exposing (mkClass, mkClassList)
 import Icons.Icon as Icon
@@ -69,6 +72,7 @@ type alias Model =
     , open : Bool
     , top : Float
     , left : Float
+    , id : String
     }
 
 
@@ -78,7 +82,20 @@ defaultModel =
     , open = False
     , top = 0
     , left = 0
+    , id = ""
     }
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( defaultModel
+    , Task.perform CurrentTime Time.now
+    )
+
+
+effects : Cmd Msg
+effects =
+    Task.perform CurrentTime Time.now
 
 
 type alias Msg =
@@ -92,6 +109,13 @@ type alias Msg =
 update : (Msg -> m) -> Msg -> Model -> ( Model, Cmd Msg )
 update fwd msg model =
     case msg of
+        CurrentTime time ->
+            let
+                id =
+                    toString <| Time.inMilliseconds time
+            in
+                { model | id = id } ! []
+
         ScrollToTopResult result ->
             ( model, Cmd.none )
 
@@ -112,7 +136,7 @@ update fwd msg model =
                                 && (toFloat y <= top + height)
 
                         task =
-                            toTop "menu" |> Task.attempt ScrollToTopResult
+                            toTop model.id |> Task.attempt ScrollToTopResult
                     in
                         -- if inside pos geometry.menu.bounds then
                         --     ( model, Cmd.none )
@@ -157,7 +181,7 @@ asIcon lift model config items =
 
 
 view : (Msg -> m) -> Model -> Config -> List (Html m) -> Html m
-view lift { open, left, top } config items =
+view lift { open, left, top, id } config items =
     let
         initOn event =
             Events.on event (Json.map (Init >> lift) decoder)
@@ -188,7 +212,7 @@ view lift { open, left, top } config items =
                 [ ( "mdc-simple-menu mdc-simple-menu--open", True )
                 , ( "elm-mdc-menu--uninitialized", True )
                 ]
-            , Attrs.id "menu"
+            , Attrs.id id
             , classList
                 [ ( "menu", True )
                 , ( "menu--hidden", not open || (List.length items == 0) )
@@ -216,12 +240,6 @@ view lift { open, left, top } config items =
 attach : (Msg -> msg) -> Attribute msg
 attach lift =
     Events.on "click" (Json.map (lift << Toggle) decoder)
-
-
-
--- openOnClick : (Msg -> msg) -> Attribute msg
--- openOnClick lift =
---     Events.on "click" (Json.succeed (lift << Open) decoder)
 
 
 onSelect : m -> Attribute m

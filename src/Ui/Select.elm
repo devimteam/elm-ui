@@ -11,6 +11,7 @@ module Ui.Select
         , config
         , Msg
         , Msg(..)
+        , effects
         )
 
 import Html exposing (..)
@@ -33,12 +34,17 @@ defaultModel =
     }
 
 
+effects : Cmd Msg
+effects =
+    Menu.effects |> Cmd.map MenuMsg
+
+
 type Msg
     = TextfieldMsg Textfield.Msg
     | MenuMsg Menu.Msg
 
 
-update : Msg -> Model -> Maybe String -> ( Model, Maybe String )
+update : Msg -> Model -> Maybe String -> ( Model, Maybe String, Cmd Msg )
 update msg model selected =
     case msg of
         TextfieldMsg msg_ ->
@@ -50,14 +56,14 @@ update msg model selected =
                         Textfield.defaultConfig
                         selected
             in
-                ( { model | textfield = newTextfieldModel }, newText )
+                ( { model | textfield = newTextfieldModel }, newText, Cmd.none )
 
         MenuMsg msg_ ->
             let
-                ( m, _ ) =
+                ( m, fx ) =
                     Menu.update MenuMsg msg_ model.menu
             in
-                ( { model | menu = m }, selected )
+                ( { model | menu = m }, selected, fx |> Cmd.map MenuMsg )
 
 
 type alias Config =
