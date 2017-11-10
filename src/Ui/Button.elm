@@ -12,6 +12,7 @@ module Ui.Button
         , primary
         , secondary
         , danger
+        , black
         , link
         , darkTheme
           -- TEA
@@ -136,6 +137,11 @@ stroked =
 danger : Property m
 danger =
     css "color" "#d50000"
+
+
+black : Property m
+black =
+    css "color" "#2b333f"
 
 
 noMargin : Property m

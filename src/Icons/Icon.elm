@@ -1,7 +1,20 @@
-module Icons.Icon exposing (view, asButton)
+module Icons.Icon exposing (view, asButton, print)
 
 import Html exposing (i, text, Html, Attribute, button)
 import Html.Attributes exposing (class, style)
+
+
+print : Html msg
+print =
+    let
+        iconStyle =
+            [ ( "color", "#fff" )
+            , ( "position", "relative" )
+            , ( "top", "6px" )
+            , ( "right", "8px" )
+            ]
+    in
+        view "print" [ style iconStyle ]
 
 
 asButton : String -> List (Attribute msg) -> List (Attribute msg) -> Html msg
