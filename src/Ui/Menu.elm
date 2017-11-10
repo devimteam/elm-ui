@@ -180,7 +180,7 @@ view lift { open, left, top } config items =
 
         menuStyle =
             ( "width", toString config.width ++ "px" )
-                :: ( "max-height", "250px" )
+                :: ( "max-height", "256px" )
                 :: alignmentStyle
     in
         div
