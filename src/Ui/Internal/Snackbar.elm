@@ -1,9 +1,8 @@
 module Ui.Internal.Snackbar exposing (Msg(..), Transition(..))
 
 
-type Msg m
+type Msg
     = Move Int Transition
-    | Dismiss Bool (Maybe m)
 
 
 type Transition

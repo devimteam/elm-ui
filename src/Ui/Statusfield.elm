@@ -40,27 +40,14 @@ getWidth config =
         toString config.width |> flip (++) "px"
 
 
-getStatusData : Status -> StatusData
-getStatusData status =
-    case status of
-        "PROCESSED" ->
-            { backgroundColor = "#3f51b4", text = "Выдано" }
-
-        _ ->
-            { backgroundColor = "#78909c", text = "?" }
-
-
-view : Config -> Status -> Html msg
-view config status =
+view : Config -> Status -> String -> Html msg
+view config statusText color =
     let
-        statusData =
-            getStatusData status
-
         indicatorStyle =
             [ ( "border-radius", "100%" )
             , ( "width", "12px" )
             , ( "height", "12px" )
-            , ( "background-color", statusData.backgroundColor )
+            , ( "background-color", color )
             , ( "margin-right", "8px" )
             ]
 
@@ -84,7 +71,7 @@ view config status =
         body =
             div [ style bodyStyle ]
                 [ div [ style indicatorStyle ] []
-                , div [] [ text statusData.text ]
+                , div [] [ text statusText ]
                 ]
     in
         div [ style statusfieldStyle ]

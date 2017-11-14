@@ -1,24 +1,18 @@
 module Ui.Snackbar
     exposing
-        ( -- VIEW
-          view
+        ( view
         , Property
-        , alignStart
-        , alignEnd
         , onDismiss
         , Contents
         , toast
-        , snack
-          -- TEA
         , Model
         , State(..)
         , defaultModel
         , Msg
         , update
-          -- , add
+        , add
         )
 
-import Dict
 import Html.Attributes as Html
 import Html exposing (Html, text)
 import Ui.Internal.Helpers as Helpers exposing (map1st, delay, cmd)
@@ -38,8 +32,6 @@ type alias Contents =
     , action : Maybe String
     , timeout : Time
     , fade : Time
-    , multiline : Bool
-    , actionOnBottom : Bool
     , dismissOnAction : Bool
     }
 
@@ -59,8 +51,8 @@ defaultModel =
     }
 
 
-type alias Msg m =
-    Ui.Internal.Snackbar.Msg m
+type alias Msg =
+    Ui.Internal.Snackbar.Msg
 
 
 {-| Generate toast with given message. Timeout is 2750ms, fade 250ms.
@@ -71,24 +63,7 @@ toast message =
     , action = Nothing
     , timeout = 2750
     , fade = 250
-    , multiline = False
-    , actionOnBottom = False
-    , dismissOnAction = True
-    }
-
-
-{-| Generate snack with given message and label.
-Timeout is 2750ms, fade 250ms.
--}
-snack : String -> String -> Contents
-snack message label =
-    { message = message
-    , action = Just label
-    , timeout = 2750
-    , fade = 250
-    , multiline = True
-    , actionOnBottom = False
-    , dismissOnAction = True
+    , dismissOnAction = False
     }
 
 
@@ -106,12 +81,12 @@ type State
     | Fading Contents
 
 
-next : Model -> Cmd Transition -> Cmd (Msg m)
+next : Model -> Cmd Transition -> Cmd Msg
 next model =
     Cmd.map (Move model.seq)
 
 
-move : Transition -> Model -> ( Model, Cmd (Msg m) )
+move : Transition -> Model -> ( Model, Cmd Msg )
 move transition model =
     case ( model.state, transition ) of
         ( Inert, Timeout ) ->
@@ -150,7 +125,7 @@ enqueue contents model =
     }
 
 
-tryDequeue : Model -> ( Model, Cmd (Msg m) )
+tryDequeue : Model -> ( Model, Cmd Msg )
 tryDequeue model =
     case ( model.state, model.queue ) of
         ( Inert, c :: cs ) ->
@@ -172,9 +147,7 @@ tryDequeue model =
 -- ACTIONS, UPDATE
 
 
-{-| Elm Architecture update function.
--}
-update : (Msg m -> m) -> Msg m -> Model -> ( Model, Cmd m )
+update : (Msg -> m) -> Msg -> Model -> ( Model, Cmd m )
 update fwd msg model =
     case msg of
         Move seq transition ->
@@ -183,54 +156,17 @@ update fwd msg model =
             else
                 model ! []
 
-        Dismiss dismissOnAction actionOnDismiss ->
-            let
-                fwdEffect =
-                    case actionOnDismiss of
-                        Just msg_ ->
-                            cmd msg_
 
-                        Nothing ->
-                            Cmd.none
-            in
-                (if dismissOnAction then
-                    update fwd (Move model.seq Clicked) model
-                 else
-                    model ! []
-                )
-                    |> Helpers.map2nd (\cmd -> Cmd.batch [ cmd, fwdEffect ])
-
-
-{-| Add a message to the snackbar. If another message is currently displayed,
-the provided message will be queued. You will be able to observe a `Begin` action
-(see `Msg` above) once the action begins displaying.
-
-You must dispatch the returned effect for the Snackbar to begin displaying your
-message.
-
--}
+add : (Msg -> m) -> Contents -> Model -> ( Model, Cmd m )
+add lift contents model =
+    let
+        ( newModel, effects ) =
+            enqueue contents model |> tryDequeue
+    in
+        newModel ! [ Cmd.map lift effects ]
 
 
 
--- add : (Material.Msg.Msg m -> m) -> Contents -> { a | mdl : Store s } -> ( { a | mdl : Store s }, Cmd m )
--- add lift idx contents model =
---     let
---         component_ =
---             Dict.get idx model.mdl.snackbar
---                 |> Maybe.withDefault defaultModel
---
---         ( component, effects ) =
---             enqueue contents component_ |> tryDequeue
---
---         mdl =
---             let
---                 mdl_ =
---                     model.mdl
---             in
---                 { mdl_ | snackbar = Dict.insert idx component mdl_.snackbar }
---     in
---         { model | mdl = mdl } ! [ Cmd.map (Material.Msg.SnackbarMsg idx >> lift) effects ]
---
 -- VIEW
 
 
@@ -250,17 +186,7 @@ onDismiss =
     Internal.option << (\msg config -> { config | onDismiss = Just msg })
 
 
-alignStart : Property m
-alignStart =
-    Options.cs "mdc-snackbar--align-start"
-
-
-alignEnd : Property m
-alignEnd =
-    Options.cs "mdc-snackbar--align-end"
-
-
-view : (Msg m -> m) -> Model -> List (Property m) -> List (Html m) -> Html m
+view : (Msg -> m) -> Model -> List (Property m) -> List (Html m) -> Html m
 view lift model options _ =
     let
         contents =
@@ -287,36 +213,12 @@ view lift model options _ =
 
         action =
             contents |> Maybe.andThen .action
-
-        multiline =
-            (Maybe.map .multiline contents == Just True)
-
-        actionOnBottom =
-            (Maybe.map .actionOnBottom contents == Just True)
-                && multiline
-
-        dismissHandler =
-            case ( contents, config.onDismiss ) of
-                ( Just content, Just _ ) ->
-                    Options.onClick (lift (Dismiss content.dismissOnAction config.onDismiss))
-
-                _ ->
-                    Options.nop
-
-        ({ config } as summary) =
-            Internal.collect defaultConfig options
     in
-        Internal.apply summary
-            Html.div
+        styled Html.div
             [ cs "mdc-snackbar"
             , cs "mdc-snackbar--active"
                 |> when isActive
-            , cs "mdc-snackbar--multiline"
-                |> when multiline
-            , cs "mdc-snackbar--action-on-bottom"
-                |> when actionOnBottom
             ]
-            []
             [ styled Html.div
                 [ cs "mdc-snackbar__text"
                 ]
@@ -330,7 +232,6 @@ view lift model options _ =
                 [ Options.styled_ Html.button
                     [ cs "mdc-button"
                     , cs "mdc-snackbar__action-button"
-                    , dismissHandler
                     ]
                     [ Html.type_ "button"
                     ]
@@ -344,9 +245,3 @@ view lift model options _ =
 
 type alias Property m =
     Options.Property (Config m) m
-
-
-type alias Store s =
-    { s
-        | snackbar : Model
-    }
