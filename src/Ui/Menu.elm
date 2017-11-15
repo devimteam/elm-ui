@@ -215,7 +215,7 @@ view lift { open, left, top, id } config items =
             , Attrs.id id
             , classList
                 [ ( "menu", True )
-                , ( "menu--hidden", not open || (List.length items == 0) )
+                , ( "menu--hidden", not open )
                 ]
             , style (List.append transformOriginStyle menuStyle)
             , initOn "elm-mdc-init"
