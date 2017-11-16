@@ -114,3 +114,11 @@ formatMoney amount =
 formatMoney1 : Float -> String
 formatMoney1 amount =
     FormatNumber.format rusLocale1 (amount / 100) ++ " ₽"
+
+
+maybeToInt : Maybe String -> Int
+maybeToInt string =
+    string
+        |> Maybe.withDefault "0"
+        |> String.toInt
+        |> Result.withDefault 0

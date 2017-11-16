@@ -11,7 +11,6 @@ import MaskedInput.Text as MaskedText
 import DOM
 import Json.Decode as Json exposing (Decoder)
 import Html.Events exposing (targetValue)
-import Mouse
 
 
 type alias Geometry =
