@@ -8,8 +8,6 @@ module Ui.Internal.DatePicker
 
 import DOM
 import Json.Decode exposing (..)
-import Html.Events exposing (targetValue)
-import Mouse
 
 
 type alias Geometry =

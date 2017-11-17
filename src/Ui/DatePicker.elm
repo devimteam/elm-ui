@@ -3,6 +3,7 @@ module Ui.DatePicker
         ( Msg
         , Msg(..)
         , Settings
+        , DateEvent
         , DateEvent(..)
         , DatePicker
         , DatePicker(..)
@@ -361,27 +362,28 @@ update date settings msg (DatePicker model) =
                 { model | focused = Just date, yearListOpen = False } ! []
 
             Pick date ->
-                let
-                    ( newTextfieldModel, _, textfieldEvent ) =
-                        case date of
-                            Nothing ->
-                                ( model.textfield, Cmd.none, Textfield.NoChange )
+                case date of
+                    Nothing ->
+                        { model | open = False } ! []
 
-                            Just d ->
+                    Just d ->
+                        let
+                            ( newTextfieldModel, _, textfieldEvent ) =
                                 Textfield.update
                                     (InternalTextfield.SetValue <| formatDate d)
                                     model.textfield
                                     settings.textfieldConfig
-                in
-                    ( DatePicker <|
-                        { model
-                            | textfield = newTextfieldModel
-                            , open = False
-                            , focused = Nothing
-                        }
-                    , Cmd.none
-                    , Changed date
-                    )
+                        in
+                            ( DatePicker <|
+                                { model
+                                    | textfield = newTextfieldModel
+                                    , inputText = Just (formatDate d)
+                                    , open = False
+                                    , focused = Nothing
+                                }
+                            , Cmd.none
+                            , Changed date
+                            )
 
             SetDate date ->
                 let
