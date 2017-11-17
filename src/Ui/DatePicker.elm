@@ -776,10 +776,7 @@ port sendIdToJs : String -> Cmd msg
 
 subscriptions : DatePicker -> Sub Msg
 subscriptions (DatePicker model) =
-    Sub.batch
-        [ if model.open == True then
-            Mouse.clicks Click
-          else
-            Sub.none
-        , scroll OnScroll
-        ]
+    if model.open == True then
+        Sub.batch [ Mouse.clicks Click, scroll OnScroll ]
+    else
+        Sub.none
