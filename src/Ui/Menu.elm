@@ -29,7 +29,6 @@ import Ui.Internal.Menu as InternalMenu
         , decoder
         )
 import Mouse
-import Dom
 import Task
 import Time exposing (Time)
 import Dom.Scroll exposing (toTop)

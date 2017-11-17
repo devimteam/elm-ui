@@ -1,4 +1,4 @@
-module Ui.DatePicker
+port module Ui.DatePicker
     exposing
         ( Msg
         , Msg(..)
@@ -39,6 +39,7 @@ import Ui.Textfield as Textfield
 import Ui.Internal.Textfield as InternalTextfield
 import Icons.Icon as Icon
 import Regex
+import Time
 import Date.Extra as Date
 import Mouse
 
@@ -56,6 +57,7 @@ type Msg
     | MouseUp
     | TextfieldMsg Textfield.Msg
     | Click Mouse.Position
+    | OnScroll ScreenData
 
 
 type alias Settings =
@@ -83,11 +85,19 @@ type alias Model =
     , today : Date
     , textfield : Textfield.Model
     , inputText : Maybe String
+    , isAbove : Bool
+    , id : String
     }
 
 
 type DatePicker
     = DatePicker Model
+
+
+type alias ScreenData =
+    { top : Int
+    , windowHeight : Int
+    }
 
 
 withTextfield : Textfield.Config -> Settings
@@ -172,6 +182,8 @@ defaultModel =
     , today = initDate
     , textfield = Textfield.defaultModel
     , inputText = Nothing
+    , isAbove = False
+    , id = ""
     }
 
 
@@ -186,15 +198,7 @@ initFromDate date today =
                 | isDirty = True
             }
     in
-        DatePicker <|
-            { open = False
-            , forceOpen = False
-            , focused = Just today
-            , today = today
-            , yearListOpen = False
-            , textfield = updated
-            , inputText = Just (formatDate date)
-            }
+        DatePicker <| defaultModel
 
 
 init : ( DatePicker, Cmd Msg )
@@ -355,8 +359,20 @@ update date settings msg (DatePicker model) =
                 let
                     cleanDate =
                         model.today |> Date.floor Date.Day
+
+                    id =
+                        cleanDate
+                            |> Date.toTime
+                            |> Time.inMilliseconds
+                            |> toString
                 in
-                    { model | focused = Just cleanDate, today = cleanDate } ! []
+                    { model
+                        | focused = Just cleanDate
+                        , today = cleanDate
+                        , id = id
+                    }
+                        ! [ sendIdToJs id
+                          ]
 
             ChangeFocus date ->
                 { model | focused = Just date, yearListOpen = False } ! []
@@ -420,6 +436,16 @@ update date settings msg (DatePicker model) =
 
             MouseUp ->
                 { model | forceOpen = False } ! []
+
+            OnScroll { top, windowHeight } ->
+                let
+                    _ =
+                        Debug.log "OnScroll" ( top, windowHeight )
+
+                    isAbove =
+                        (toFloat top) > (toFloat windowHeight / 2)
+                in
+                    ({ model | isAbove = isAbove }) ! []
 
 
 pick : Maybe Date -> Msg
@@ -497,7 +523,7 @@ view pickedDate settings (DatePicker ({ open } as model)) =
                 textfieldConfig
                 |> Html.map TextfieldMsg
     in
-        div [ class "container" ]
+        div [ class "container", Attrs.id model.id ]
             [ dateInput
             , datePicker pickedDate settings model
             ]
@@ -628,6 +654,7 @@ datePicker pickedDate settings ({ focused, today } as model) =
                 [ ( "picker", True )
                 , ( "picker-closed", not model.open )
                 , ( "picker-open", model.open )
+                , ( "picker-above", model.isAbove )
                 ]
             , onPicker "mousedown" MouseDown
             , onPicker "mouseup" MouseUp
@@ -741,6 +768,12 @@ mkClassList { classNamespace } cs =
 -- SUBSCRIBTIONS
 
 
+port scroll : (ScreenData -> msg) -> Sub msg
+
+
+port sendIdToJs : String -> Cmd msg
+
+
 subscriptions : DatePicker -> Sub Msg
 subscriptions (DatePicker model) =
     Sub.batch
@@ -748,4 +781,5 @@ subscriptions (DatePicker model) =
             Mouse.clicks Click
           else
             Sub.none
+        , scroll OnScroll
         ]
