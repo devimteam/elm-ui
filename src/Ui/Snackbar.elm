@@ -213,6 +213,9 @@ view lift model options _ =
 
         action =
             contents |> Maybe.andThen .action
+
+        trim =
+            String.slice 0 100
     in
         styled Html.div
             [ cs "mdc-snackbar"
@@ -223,7 +226,7 @@ view lift model options _ =
                 [ cs "mdc-snackbar__text"
                 ]
                 (contents
-                    |> Maybe.map (\c -> [ text c.message ])
+                    |> Maybe.map (\c -> [ text <| trim c.message ])
                     |> Maybe.withDefault []
                 )
             , styled Html.div
