@@ -122,3 +122,16 @@ maybeToInt string =
         |> Maybe.withDefault "0"
         |> String.toInt
         |> Result.withDefault 0
+
+
+rangeWithStep : Int -> Int -> Int -> List Int
+rangeWithStep lo hi step =
+    rangeWithStepHelp lo hi step []
+
+
+rangeWithStepHelp : Int -> Int -> Int -> List Int -> List Int
+rangeWithStepHelp lo hi step list =
+    if lo <= hi then
+        rangeWithStepHelp (lo + step) hi step (lo :: list)
+    else
+        List.reverse list
