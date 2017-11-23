@@ -19,6 +19,8 @@ import Html.Attributes exposing (style, class)
 import Ui.Textfield as Textfield
 import Icons.Icon as Icon
 import Ui.Menu as Menu
+import Svg.Circle as Circle
+import Ui.Options as Options exposing (cs, styled, css)
 
 
 type alias Model =
@@ -70,6 +72,7 @@ type alias Config =
     { textfieldConfig : Textfield.Config
     , selected : Maybe String
     , width : Int
+    , loading : Bool
     }
 
 
@@ -78,6 +81,7 @@ defaultConfig =
     { textfieldConfig = Textfield.defaultConfig
     , selected = Nothing
     , width = 380
+    , loading = False
     }
 
 
@@ -96,6 +100,7 @@ config label selected width =
         { textfieldConfig = setLabel
         , selected = selected
         , width = width
+        , loading = False
         }
 
 
@@ -105,7 +110,7 @@ item attributes children =
 
 
 viewEditable : (Msg -> m) -> Model -> Config -> List (Html m) -> Html m
-viewEditable lift model { width, textfieldConfig, selected } htmlItems =
+viewEditable lift model { width, textfieldConfig, selected, loading } htmlItems =
     let
         defaultMenuConfig =
             Menu.defaultConfig
@@ -144,7 +149,7 @@ viewEditable lift model { width, textfieldConfig, selected } htmlItems =
 
 
 view : (Msg -> m) -> Model -> Config -> List (Html m) -> Html m
-view lift model { width, textfieldConfig, selected } htmlItems =
+view lift model { width, textfieldConfig, selected, loading } htmlItems =
     let
         defaultMenuConfig =
             Menu.defaultConfig
@@ -187,14 +192,24 @@ view lift model { width, textfieldConfig, selected } htmlItems =
                     textfieldConfig
                     |> Html.map never
                 , Menu.view (lift << MenuMsg) model.menu menuConfig htmlItems
-                , Icon.asButton "arrow_drop_down"
-                    [ style
-                        [ ( "position", "absolute" )
-                        , ( "top", "24px" )
-                        , ( "right", "0px" )
+                , if loading then
+                    styled div
+                        [ css "position" "absolute"
+                        , css "right" "0"
+                        , css "top"
+                            "17px"
                         ]
-                    ]
-                    []
+                        [ Circle.view 30
+                        ]
+                  else
+                    Icon.asButton "arrow_drop_down"
+                        [ style
+                            [ ( "position", "absolute" )
+                            , ( "top", "24px" )
+                            , ( "right", "0px" )
+                            ]
+                        ]
+                        []
                 ]
             ]
 
