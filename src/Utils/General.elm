@@ -111,6 +111,11 @@ formatMoney amount =
     FormatNumber.format rusLocale (amount / 100) ++ " ₽"
 
 
+formatMoneyInt : Int -> String
+formatMoneyInt amount =
+    FormatNumber.format rusLocale ((toFloat amount) / 100) ++ " ₽"
+
+
 formatMoney1 : Float -> String
 formatMoney1 amount =
     FormatNumber.format rusLocale1 (amount / 100) ++ " ₽"
