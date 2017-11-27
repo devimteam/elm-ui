@@ -64,7 +64,7 @@ initial :
     List ( String, Field )
     -> Validation e output
     -> List ( String, InputModels )
-    -> ( Model e output, Cmd Msg, DateEvent )
+    -> ( Model e output, Cmd Msg, DateEvent, Bool )
 initial initialFields validation initialUi =
     let
         model =
@@ -127,7 +127,7 @@ onlyDatepickers d value =
             False
 
 
-update : Msg -> Model e output -> Validation e output -> ( Model e output, Cmd Msg, DateEvent )
+update : Msg -> Model e output -> Validation e output -> ( Model e output, Cmd Msg, DateEvent, Bool )
 update msg ({ form } as model) validation =
     case msg of
         CurrentDate today ->
@@ -161,7 +161,20 @@ update msg ({ form } as model) validation =
                     ! []
 
         FormMsg formMsg ->
-            { model | form = Form.update validation formMsg form } ! []
+            let
+                isSubmitted =
+                    case formMsg of
+                        Form.Submit ->
+                            True
+
+                        _ ->
+                            False
+            in
+                ( { model | form = Form.update validation formMsg form }
+                , Cmd.none
+                , DatePicker.NoChange
+                , isSubmitted
+                )
 
         TextfieldMsg fieldName config msg_ ->
             let
@@ -228,6 +241,7 @@ update msg ({ form } as model) validation =
                   }
                 , Cmd.map (DatePickerMsg fieldName) datePickerFx
                 , dateEvent
+                , False
                 )
 
 
@@ -332,6 +346,6 @@ subscriptions { ui } =
         Sub.batch subs
 
 
-(!) : Model e o -> List (Cmd Msg) -> ( Model e o, Cmd Msg, DateEvent )
+(!) : Model e o -> List (Cmd Msg) -> ( Model e o, Cmd Msg, DateEvent, Bool )
 (!) m cs =
-    ( m, Cmd.batch cs, DatePicker.NoChange )
+    ( m, Cmd.batch cs, DatePicker.NoChange, False )
