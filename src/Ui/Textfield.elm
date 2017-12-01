@@ -153,8 +153,8 @@ replaceSpaces =
     Regex.replace All (regex "\\s") (\_ -> "")
 
 
-calculateCurrencyValues : String -> ( Maybe Int, Maybe String )
-calculateCurrencyValues str =
+calculateCurrencyValues : String -> Maybe Int -> Maybe String -> ( Maybe Int, Maybe String )
+calculateCurrencyValues str prevIntValue prevDisplayValue =
     let
         stringToInt =
             String.toInt >> Result.withDefault 0
@@ -213,9 +213,9 @@ calculateCurrencyValues str =
                 _ ->
                     ( Nothing, Nothing )
     in
-        case (String.length str > 9) of
+        case (String.length str > 7) of
             True ->
-                ( Nothing, Nothing )
+                ( prevIntValue, prevDisplayValue )
 
             False ->
                 find All
@@ -280,17 +280,18 @@ update msg model config =
                     { model | isDirty = dirty } ! []
 
             CurrencyInput (Just str) ->
-                case calculateCurrencyValues str of
-                    ( Just intValue, Just displayCurrencyValue ) ->
-                        ({ model
-                            | intValue = Just intValue
-                            , displayCurrencyValue = Just displayCurrencyValue
-                         }
-                        )
-                            ! []
-
-                    ( _, _ ) ->
-                        model ! []
+                let
+                    ( intValue, displayCurrencyValue ) =
+                        calculateCurrencyValues str
+                            model.intValue
+                            model.displayCurrencyValue
+                in
+                    ({ model
+                        | intValue = intValue
+                        , displayCurrencyValue = displayCurrencyValue
+                     }
+                    )
+                        ! []
 
             CurrencyInput Nothing ->
                 model ! []
