@@ -213,13 +213,18 @@ calculateCurrencyValues str =
                 _ ->
                     ( Nothing, Nothing )
     in
-        find All
-            (regex "^(\\d+)([,.])?(\\d)?(\\d?)?")
-            (replaceSpaces str)
-            |> List.head
-            |> Maybe.map .submatches
-            |> Maybe.map checkSubmatch
-            |> Maybe.withDefault ( Nothing, Nothing )
+        case (String.length str > 9) of
+            True ->
+                ( Nothing, Nothing )
+
+            False ->
+                find All
+                    (regex "^(\\d+)([,.])?(\\d)?(\\d?)?")
+                    (replaceSpaces str)
+                    |> List.head
+                    |> Maybe.map .submatches
+                    |> Maybe.map checkSubmatch
+                    |> Maybe.withDefault ( Nothing, Nothing )
 
 
 update : Msg -> Model -> Config -> ( Model, Cmd m, TextfieldEvent )
@@ -275,16 +280,17 @@ update msg model config =
                     { model | isDirty = dirty } ! []
 
             CurrencyInput (Just str) ->
-                let
-                    ( intValue, displayCurrencyValue ) =
-                        calculateCurrencyValues str
-                in
-                    ({ model
-                        | intValue = intValue
-                        , displayCurrencyValue = displayCurrencyValue
-                     }
-                    )
-                        ! []
+                case calculateCurrencyValues str of
+                    ( Just intValue, Just displayCurrencyValue ) ->
+                        ({ model
+                            | intValue = Just intValue
+                            , displayCurrencyValue = Just displayCurrencyValue
+                         }
+                        )
+                            ! []
+
+                    ( _, _ ) ->
+                        model ! []
 
             CurrencyInput Nothing ->
                 model ! []
