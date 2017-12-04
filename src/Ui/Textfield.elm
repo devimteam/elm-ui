@@ -442,6 +442,7 @@ viewReadonly value_ model config =
                 , style
                     [ ( "height", st.height )
                     , ( "width", getWidth config )
+                    , ( "white-space", "nowrap" )
                     ]
                 ]
                 [ contentHtml
@@ -695,6 +696,7 @@ view value_ model config =
                     [ ( "height", st.height )
                     , ( "position", "initial" )
                     , ( "width", getWidth config )
+                    , ( "white-space", "nowrap" )
                     ]
                 ]
                 [ contentHtml
