@@ -7,13 +7,12 @@ module Ui.Snackbar
         , toast
         , Model
         , State(..)
-        , defaultModel
         , Msg
+        , defaultModel
         , update
         , add
         )
 
-import Html.Attributes as Html
 import Html exposing (Html, text)
 import Ui.Internal.Helpers as Helpers exposing (map1st, delay, cmd)
 import Ui.Internal.Options as Internal
@@ -22,6 +21,11 @@ import Ui.Options as Options exposing (styled, cs, when)
 import Maybe exposing (andThen)
 import Platform.Cmd exposing (Cmd)
 import Time exposing (Time)
+
+
+type alias Msg =
+    Ui.Internal.Snackbar.Msg
+
 
 
 -- MODEL
@@ -49,10 +53,6 @@ defaultModel =
     , state = Inert
     , seq = -1
     }
-
-
-type alias Msg =
-    Ui.Internal.Snackbar.Msg
 
 
 {-| Generate toast with given message. Timeout is 2750ms, fade 250ms.
@@ -215,7 +215,7 @@ view lift model options _ =
             contents |> Maybe.andThen .action
 
         trim =
-            String.slice 0 100
+            String.slice 0 150
     in
         styled Html.div
             [ cs "mdc-snackbar"
@@ -229,20 +229,6 @@ view lift model options _ =
                     |> Maybe.map (\c -> [ text <| trim c.message ])
                     |> Maybe.withDefault []
                 )
-            , styled Html.div
-                [ cs "mdc-snackbar__action-wrapper"
-                ]
-                [ Options.styled_ Html.button
-                    [ cs "mdc-button"
-                    , cs "mdc-snackbar__action-button"
-                    ]
-                    [ Html.type_ "button"
-                    ]
-                    (action
-                        |> Maybe.map (\action -> [ text action ])
-                        |> Maybe.withDefault []
-                    )
-                ]
             ]
 
 
