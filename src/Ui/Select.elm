@@ -19,7 +19,6 @@ import Html.Attributes exposing (style, class)
 import Ui.Textfield as Textfield
 import Icons.Icon as Icon
 import Ui.Menu as Menu
-import Svg.Circle as Circle
 import Ui.Options as Options exposing (cs, styled, css)
 
 
@@ -192,24 +191,14 @@ view lift model { width, textfieldConfig, selected, loading } htmlItems =
                     textfieldConfig
                     |> Html.map never
                 , Menu.view (lift << MenuMsg) model.menu menuConfig htmlItems
-                , if loading then
-                    styled div
-                        [ css "position" "absolute"
-                        , css "right" "0"
-                        , css "top"
-                            "17px"
+                , Icon.asButton "arrow_drop_down"
+                    [ style
+                        [ ( "position", "absolute" )
+                        , ( "top", "24px" )
+                        , ( "right", "0px" )
                         ]
-                        [ Circle.view 30
-                        ]
-                  else
-                    Icon.asButton "arrow_drop_down"
-                        [ style
-                            [ ( "position", "absolute" )
-                            , ( "top", "24px" )
-                            , ( "right", "0px" )
-                            ]
-                        ]
-                        []
+                    ]
+                    []
                 ]
             ]
 
