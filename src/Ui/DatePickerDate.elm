@@ -1,7 +1,7 @@
 module Ui.DatePickerDate
     exposing
         ( YearRange(..)
-        , initDate
+        , initDate_
         , formatDate
         , formatDateMonthFullName
         , formatDay
@@ -76,8 +76,8 @@ fromString text_ =
         Date.fromString <| parsed <| distruct text
 
 
-initDate : Date
-initDate =
+initDate_ : Date
+initDate_ =
     mkDate 1992 May 29
 
 

@@ -25,6 +25,7 @@ port module Ui.DatePicker
         , withLabel
         , withTextfield
         , subscriptions
+        , initDate
         )
 
 import Html exposing (..)
@@ -33,7 +34,7 @@ import Html.Events exposing (on, onBlur, onInput, onFocus, onWithOptions, target
 import Html.Keyed
 import Json.Decode as Json
 import Task
-import Date exposing (Date, Day(..), Month, day, month, year)
+import Date exposing (Date, Day(..), Month, Month(..), day, month, year)
 import Ui.DatePickerDate exposing (..)
 import Ui.Textfield as Textfield
 import Ui.Internal.Textfield as InternalTextfield
@@ -98,6 +99,11 @@ type alias ScreenData =
     { top : Int
     , windowHeight : Int
     }
+
+
+initDate : Date
+initDate =
+    initDate_
 
 
 withTextfield : Textfield.Config -> Settings
@@ -358,7 +364,7 @@ update date settings msg (DatePicker model) =
             CurrentDate date ->
                 let
                     cleanDate =
-                        model.today |> Date.floor Date.Day
+                        date |> Date.floor Date.Day
 
                     id =
                         cleanDate
