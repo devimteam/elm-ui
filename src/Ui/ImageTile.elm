@@ -31,15 +31,22 @@ type alias FileRecord =
 
 type Msg
     = Clear
-    | ImageSelected
+    | ImageSelected InputId
     | OpenImage FileRecord
     | FileRendered RenderedFile
-    | PreviewRendered String
+    | PreviewRendered RenderedPreview
 
 
 type alias RenderedFile =
     { fileName : String
     , content : String
+    , inputId : String
+    }
+
+
+type alias RenderedPreview =
+    { content : String
+    , inputId : String
     }
 
 
@@ -59,6 +66,20 @@ init =
     ( defaultModel
     , Cmd.none
     )
+
+
+extractIdFromMsg : Msg -> String
+extractIdFromMsg msg =
+    Debug.log "inputId" <|
+        case msg of
+            PreviewRendered file ->
+                file.inputId
+
+            FileRendered file ->
+                file.inputId
+
+            _ ->
+                ""
 
 
 renderImage : FileRecord -> Html Msg
@@ -163,7 +184,7 @@ renderPlaceholder inputId =
                 [ Icon.view "add" [] ]
             , input
                 [ type_ "file"
-                , on "change" (JD.succeed ImageSelected)
+                , on "change" (JD.succeed (ImageSelected inputId))
                 , id inputId
                 , accept ".pdf"
                 , style
@@ -195,10 +216,10 @@ view inputId model =
             ]
 
 
-update : InputId -> Msg -> Model -> ( Model, Cmd Msg )
-update inputId msg model =
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
     case msg of
-        ImageSelected ->
+        ImageSelected inputId ->
             ( model
             , imageSelected inputId
             )
@@ -225,7 +246,7 @@ update inputId msg model =
         PreviewRendered renderedPreview ->
             let
                 newFile =
-                    Maybe.map (\t -> { t | preview = Just renderedPreview }) model.file
+                    Maybe.map (\t -> { t | preview = Just renderedPreview.content }) model.file
             in
                 ( { model | file = newFile }
                 , Cmd.none
@@ -249,4 +270,4 @@ port openImage : FileRecord -> Cmd msg
 port fileRendered : (RenderedFile -> msg) -> Sub msg
 
 
-port previewRendered : (String -> msg) -> Sub msg
+port previewRendered : (RenderedPreview -> msg) -> Sub msg
