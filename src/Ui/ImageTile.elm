@@ -78,6 +78,9 @@ extractIdFromMsg msg =
             FileRendered file ->
                 file.inputId
 
+            ImageSelected inputId ->
+                inputId
+
             _ ->
                 ""
 
