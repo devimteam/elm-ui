@@ -21,6 +21,19 @@ rusLocale1 =
     Locale 2 " " "," "-" ""
 
 
+extractBase64 : Maybe String -> String
+extractBase64 str =
+    Maybe.map
+        (\x ->
+            String.split "," x
+                |> List.tail
+                |> Maybe.withDefault []
+                |> String.join ""
+        )
+        str
+        |> Maybe.withDefault ""
+
+
 pluralize : Plural -> Int -> String
 pluralize (Plural one two five) count =
     let
