@@ -149,7 +149,12 @@ maybeToInt string =
 
 rangeWithStep : Int -> Int -> Int -> List Int
 rangeWithStep lo hi step =
-    rangeWithStepHelp lo hi step []
+    case step of
+        0 ->
+            []
+
+        _ ->
+            rangeWithStepHelp lo hi step []
 
 
 rangeWithStepHelp : Int -> Int -> Int -> List Int -> List Int

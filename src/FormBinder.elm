@@ -67,13 +67,20 @@ initial :
     -> ( Model e output, Cmd Msg, DateEvent, Bool )
 initial initialFields validation initialUi =
     let
+        _ =
+            Debug.log "initialFields" initialFields
+
         model =
             { ui = Dict.fromList initialUi
             , form = Form.initial initialFields validation
             , date = Just <| Date.fromParts 1992 Feb 21 0 0 0 0
             }
     in
-        model ! [ Task.perform CurrentDate Date.now ]
+        model
+            ! [ Task.perform CurrentDate Date.now
+
+              -- , DatePicker.effects |> Cmd.map DatePickerMsg
+              ]
 
 
 type Msg

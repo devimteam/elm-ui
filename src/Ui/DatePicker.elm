@@ -26,6 +26,7 @@ port module Ui.DatePicker
         , withTextfield
         , subscriptions
         , initDate
+        , effects
         )
 
 import Html exposing (..)
@@ -213,6 +214,11 @@ init =
     ( DatePicker defaultModel
     , Task.perform CurrentDate Date.now
     )
+
+
+effects : Cmd Msg
+effects =
+    Task.perform CurrentDate Date.now
 
 
 prepareDates : Date -> Day -> { currentMonth : Date, currentDates : List Date }
@@ -454,7 +460,11 @@ update date settings msg (DatePicker model) =
                     ({ model | isAbove = isAbove }) ! []
 
             Init ->
-                model ! [ sendIdToJs model.id ]
+                let
+                    _ =
+                        Debug.log "Init" "Init"
+                in
+                    model ! [ sendIdToJs model.id ]
 
 
 pick : Maybe Date -> Msg
