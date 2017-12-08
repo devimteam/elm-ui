@@ -1,7 +1,7 @@
 port module Ui.ImageTile exposing (..)
 
 import Html exposing (Html, div, input, label, text, img, span)
-import Html.Attributes exposing (type_, id, src, for, style, accept)
+import Html.Attributes exposing (type_, id, src, for, style, accept, disabled)
 import Html.Events exposing (on, onClick, onWithOptions)
 import Json.Decode as JD
 import Ui.Options as Options exposing (styled, cs, css, when)
@@ -85,8 +85,8 @@ extractIdFromMsg msg =
                 ""
 
 
-renderImage : FileRecord -> Html Msg
-renderImage file =
+renderImage : FileRecord -> Bool -> Html Msg
+renderImage file readonly =
     let
         filename_ =
             file.meta.fileName
@@ -143,6 +143,21 @@ renderImage file =
             [ ( "color", "#cfd8dc" )
             ]
 
+        deleteBtn =
+            case readonly of
+                False ->
+                    Icon.asButton "delete"
+                        [ onWithOptions "click"
+                            { stopPropagation = True
+                            , preventDefault = False
+                            }
+                            (JD.succeed Clear)
+                        ]
+                        [ style deleteIconStyle ]
+
+                True ->
+                    text ""
+
         thumb =
             div
                 [ style thumbStyle
@@ -152,14 +167,7 @@ renderImage file =
                     [ style thumbInfoStyle ]
                     [ span [ style titleStyle ] [ text filename_ ]
                     , div [ style btnStyles ]
-                        [ Icon.asButton "delete"
-                            [ onWithOptions "click"
-                                { stopPropagation = True
-                                , preventDefault = False
-                                }
-                                (JD.succeed Clear)
-                            ]
-                            [ style deleteIconStyle ]
+                        [ deleteBtn
                         ]
                     ]
                 ]
@@ -167,8 +175,8 @@ renderImage file =
         div [] [ thumb ]
 
 
-renderPlaceholder : InputId -> Html Msg
-renderPlaceholder inputId =
+renderPlaceholder : InputId -> Bool -> Html Msg
+renderPlaceholder inputId readonly =
     let
         placeholderStyle =
             [ ( "background-color", "#EDEFF1" )
@@ -178,42 +186,61 @@ renderPlaceholder inputId =
             , ( "justify-content", "center" )
             , ( "align-items", "center" )
             ]
+
+        event =
+            case readonly of
+                False ->
+                    [ on "change" (JD.succeed (ImageSelected inputId)) ]
+
+                True ->
+                    [ disabled readonly ]
+
+        inputAttrs =
+            event
+                ++ [ type_ "file"
+                   , id inputId
+                   , accept ".pdf"
+                   , style
+                        [ ( "display", "none" )
+                        ]
+                   ]
+
+        icon =
+            case readonly of
+                False ->
+                    Icon.view "add" []
+
+                True ->
+                    Icon.view "photo" []
     in
         div []
             [ label
                 [ style placeholderStyle
                 , for inputId
                 ]
-                [ Icon.view "add" [] ]
+                [ icon ]
             , input
-                [ type_ "file"
-                , on "change" (JD.succeed (ImageSelected inputId))
-                , id inputId
-                , accept ".pdf"
-                , style
-                    [ ( "display", "none" )
-                    ]
-                ]
+                inputAttrs
                 []
             ]
 
 
-view : InputId -> Model -> Html Msg
-view inputId model =
+view : InputId -> Bool -> String -> Model -> Html Msg
+view inputId readonly title model =
     let
         body =
             case model.file of
                 Just file ->
-                    renderImage file
+                    renderImage file readonly
 
                 Nothing ->
-                    renderPlaceholder inputId
+                    renderPlaceholder inputId readonly
     in
         div []
             [ div []
                 [ styled div
                     [ Typography.headline, Typography.pad24 ]
-                    [ text "Сканы паспорта *" ]
+                    [ text title ]
                 ]
             , body
             ]
