@@ -59,6 +59,7 @@ type Msg
     | TextfieldMsg Textfield.Msg
     | Click Mouse.Position
     | OnScroll ScreenData
+    | Init
 
 
 type alias Settings =
@@ -377,8 +378,7 @@ update date settings msg (DatePicker model) =
                         , today = cleanDate
                         , id = id
                     }
-                        ! [ sendIdToJs id
-                          ]
+                        ! []
 
             ChangeFocus date ->
                 { model | focused = Just date, yearListOpen = False } ! []
@@ -446,12 +446,15 @@ update date settings msg (DatePicker model) =
             OnScroll { top, windowHeight } ->
                 let
                     _ =
-                        Debug.log "OnScroll" ( top, windowHeight )
+                        Debug.log "onScroll" ( top, windowHeight )
 
                     isAbove =
                         (toFloat top) > (toFloat windowHeight / 2)
                 in
                     ({ model | isAbove = isAbove }) ! []
+
+            Init ->
+                model ! [ sendIdToJs model.id ]
 
 
 pick : Maybe Date -> Msg
@@ -528,8 +531,16 @@ view pickedDate settings (DatePicker ({ open } as model)) =
                 model.textfield
                 textfieldConfig
                 |> Html.map TextfieldMsg
+
+        initOn event =
+            on event (Json.succeed (Init))
     in
-        div [ class "container", Attrs.id model.id ]
+        div
+            [ class "container"
+            , Attrs.class "elm-datepicker--uninitialized"
+            , Attrs.id model.id
+            , initOn "elm-mdc-init"
+            ]
             [ dateInput
             , datePicker pickedDate settings model
             ]
@@ -785,4 +796,4 @@ subscriptions (DatePicker model) =
     if model.open == True then
         Sub.batch [ Mouse.clicks Click, scroll OnScroll ]
     else
-        Sub.none
+        scroll OnScroll
