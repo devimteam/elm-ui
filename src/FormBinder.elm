@@ -67,9 +67,6 @@ initial :
     -> ( Model e output, Cmd Msg, DateEvent, Bool )
 initial initialFields validation initialUi =
     let
-        _ =
-            Debug.log "initialFields" initialFields
-
         model =
             { ui = Dict.fromList initialUi
             , form = Form.initial initialFields validation
@@ -78,8 +75,8 @@ initial initialFields validation initialUi =
     in
         model
             ! [ Task.perform CurrentDate Date.now
-
-              -- , DatePicker.effects |> Cmd.map DatePickerMsg
+              , DatePicker.effects |> Cmd.map (DatePickerMsg "issuedAt")
+              , DatePicker.effects |> Cmd.map (DatePickerMsg "dateOfBirth")
               ]
 
 
@@ -141,29 +138,9 @@ update msg ({ form } as model) validation =
             let
                 initDate =
                     (Date.add Date.Day 7 today)
-
-                datepickersKeys =
-                    Dict.filter onlyDatepickers model.ui |> Dict.keys
-
-                dfMod =
-                    DatePicker.defaultModel
-
-                updater key =
-                    Dict.update key (\_ -> Just <| DatePickerModel (DatePicker.DatePicker <| { dfMod | today = today }))
-
-                folded =
-                    Dict.foldl
-                        (\k v a ->
-                            if (List.member k datepickersKeys) then
-                                (updater k a)
-                            else
-                                a
-                        )
-                        model.ui
             in
                 { model
                     | date = Just initDate
-                    , ui = folded model.ui
                 }
                     ! []
 
@@ -206,7 +183,7 @@ update msg ({ form } as model) validation =
             in
                 { model | form = newFormModel_, ui = newUi } ! []
 
-        DatePickerMsg fieldName msg ->
+        DatePickerMsg fieldName msg_ ->
             let
                 field =
                     Form.getFieldAsString fieldName form
@@ -215,7 +192,7 @@ update msg ({ form } as model) validation =
                     DatePicker.update
                         model.date
                         DatePicker.defaultSettings
-                        msg
+                        msg_
                         (getDatepickerModel model.ui fieldName)
 
                 ( newDate, newFormModel ) =

@@ -428,6 +428,28 @@ viewReadonly value_ model config =
 
         contentHtml =
             divHtml
+
+        extraTextStyle =
+            [ ( "float", "right" )
+            , ( "position", "absolute" )
+            , ( "right", "0" )
+            , ( "bottom", "10px" )
+            , ( "height"
+              , if config.asTitle then
+                    "24px"
+                else
+                    "15px"
+              )
+            , ( "font-family", "Roboto" )
+            , ( "font-size"
+              , if config.asTitle then
+                    "34px"
+                else
+                    "16px"
+              )
+            , ( "line-height", "15px" )
+            , ( "color", "rgba(0, 0, 0, 0.38)" )
+            ]
     in
         div []
             [ div
@@ -464,18 +486,7 @@ viewReadonly value_ model config =
                             []
                     )
                 , span
-                    [ style
-                        [ ( "float", "right" )
-                        , ( "position", "absolute" )
-                        , ( "right", "0" )
-                        , ( "bottom", "10px" )
-                        , ( "height", "24px" )
-                        , ( "font-family", "Roboto" )
-                        , ( "font-size", "34px" )
-                        , ( "line-height", "15px" )
-                        , ( "color", "rgba(0, 0, 0, 0.38)" )
-                        ]
-                    ]
+                    [ style extraTextStyle ]
                     [ text <| extra ++ pl ]
                 , div
                     [ classList
@@ -679,6 +690,28 @@ view value_ model config =
                 currencyInput
             else
                 inputHtml
+
+        extraTextStyle =
+            [ ( "float", "right" )
+            , ( "position", "absolute" )
+            , ( "right", "0" )
+            , ( "bottom", "10px" )
+            , ( "height"
+              , if config.asTitle then
+                    "24px"
+                else
+                    "15px"
+              )
+            , ( "font-family", "Roboto" )
+            , ( "font-size"
+              , if config.asTitle then
+                    "34px"
+                else
+                    "16px"
+              )
+            , ( "line-height", "15px" )
+            , ( "color", "rgba(0, 0, 0, 0.38)" )
+            ]
     in
         div []
             [ div
@@ -727,18 +760,7 @@ view value_ model config =
                             []
                     )
                 , span
-                    [ style
-                        [ ( "float", "right" )
-                        , ( "position", "absolute" )
-                        , ( "right", "0" )
-                        , ( "bottom", "10px" )
-                        , ( "height", "24px" )
-                        , ( "font-family", "Roboto" )
-                        , ( "font-size", "34px" )
-                        , ( "line-height", "15px" )
-                        , ( "color", "rgba(0, 0, 0, 0.38)" )
-                        ]
-                    ]
+                    [ style extraTextStyle ]
                     [ text <| extra ++ pl ]
                 , div
                     [ classList

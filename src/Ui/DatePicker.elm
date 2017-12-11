@@ -44,10 +44,12 @@ import Regex
 import Time
 import Date.Extra as Date
 import Mouse
+import Random
 
 
 type Msg
     = CurrentDate Date
+    | RandomInt Int
     | ChangeFocus Date
     | Pick (Maybe Date)
     | SetDate Date
@@ -212,13 +214,16 @@ initFromDate date today =
 init : ( DatePicker, Cmd Msg )
 init =
     ( DatePicker defaultModel
-    , Task.perform CurrentDate Date.now
+    , Cmd.batch
+        [ Task.perform CurrentDate Date.now
+        , Random.generate RandomInt (Random.int 1 100)
+        ]
     )
 
 
 effects : Cmd Msg
 effects =
-    Task.perform CurrentDate Date.now
+    init |> Tuple.second
 
 
 prepareDates : Date -> Day -> { currentMonth : Date, currentDates : List Date }
@@ -382,7 +387,6 @@ update date settings msg (DatePicker model) =
                     { model
                         | focused = Just cleanDate
                         , today = cleanDate
-                        , id = id
                     }
                         ! []
 
@@ -451,20 +455,20 @@ update date settings msg (DatePicker model) =
 
             OnScroll { top, windowHeight } ->
                 let
-                    _ =
-                        Debug.log "onScroll" ( top, windowHeight )
-
                     isAbove =
                         (toFloat top) > (toFloat windowHeight / 2)
                 in
                     ({ model | isAbove = isAbove }) ! []
 
             Init ->
+                model ! [ sendIdToJs model.id ]
+
+            RandomInt int ->
                 let
-                    _ =
-                        Debug.log "Init" "Init"
+                    id =
+                        "datepicker" ++ (toString int)
                 in
-                    model ! [ sendIdToJs model.id ]
+                    { model | id = id } ! [ sendIdToJs id ]
 
 
 pick : Maybe Date -> Msg
