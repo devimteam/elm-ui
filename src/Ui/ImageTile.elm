@@ -166,18 +166,21 @@ renderImage file readonly =
                 True ->
                     text ""
 
+        infoDiv = case readonly of
+          False -> div [ style thumbInfoStyle ]
+                                       [ span [ style titleStyle ] [ text filename_ ]
+                                       , div [ style btnStyles ]
+                                           [ deleteBtn
+                                           ]
+                                       ]
+          True -> text ""
+
         thumb =
             div
                 [ style thumbStyle
                 , onClick (OpenImage file)
                 ]
-                [ div
-                    [ style thumbInfoStyle ]
-                    [ span [ style titleStyle ] [ text filename_ ]
-                    , div [ style btnStyles ]
-                        [ deleteBtn
-                        ]
-                    ]
+                [ infoDiv
                 ]
     in
         div [] [ thumb ]
