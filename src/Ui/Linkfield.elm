@@ -1,10 +1,10 @@
 module Ui.Linkfield exposing (..)
 
-import Html exposing (Html, div, a, text, label)
+import Html exposing (Html, div, a, text, label, Attribute)
 import Html.Events exposing (onWithOptions)
 import Json.Decode as JD
-import Html.Attributes
 import Html.Attributes exposing (style)
+import Json.Decode as JD
 
 
 type alias Config =
@@ -44,17 +44,26 @@ getFontSize asTitle =
         "16px"
 
 
+getMargin : Bool -> String
+getMargin asTitle =
+    if asTitle then
+        "4px 0 8px 0"
+    else
+        "14px 0 8px 0"
+
+
 view : Config -> List (Html.Attribute msg) -> Bool -> Html msg
 view config linkAttributes showLink =
     let
         linkfieldStyle =
-            [ ( "margin", "14px 0 8px 0" )
+            [ ( "margin", getMargin config.asTitle )
             , ( "width", getWidth config )
             ]
 
         labelStyle =
             [ ( "color", "rgba(0, 0, 0, 0.5)" )
             , ( "font-size", "12px" )
+            , ( "white-space", "nowrap" )
             ]
 
         linkStyle =
@@ -80,3 +89,10 @@ view config linkAttributes showLink =
             [ label [ style labelStyle ] [ text config.label ]
             , div [ style bodyStyle ] [ body ]
             ]
+
+
+onClick : msg -> Attribute msg
+onClick m =
+    onWithOptions "click"
+        { stopPropagation = True, preventDefault = True }
+        (JD.succeed m)
