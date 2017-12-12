@@ -1,6 +1,6 @@
 port module Ui.ImageTile exposing (..)
 
-import Html exposing (Html, div, input, label, text, img, span)
+import Html exposing (Html, div, input, label, text, img, span, p)
 import Html.Attributes exposing (type_, id, src, for, style, accept, disabled)
 import Html.Events exposing (on, onClick, onWithOptions)
 import Json.Decode as JD
@@ -12,6 +12,14 @@ import Html.Attributes as Attrs
 
 type alias InputId =
     String
+
+
+type alias Config =
+    { readonly : Bool
+    , invalid : Bool
+    , inputId : String
+    , title : String
+    }
 
 
 type alias FileRecordMetaData =
@@ -175,8 +183,8 @@ renderImage file readonly =
         div [] [ thumb ]
 
 
-renderPlaceholder : InputId -> Bool -> Html Msg
-renderPlaceholder inputId readonly =
+renderPlaceholder : Config -> Html Msg
+renderPlaceholder { inputId, readonly, invalid } =
     let
         placeholderStyle =
             [ ( "background-color", "#EDEFF1" )
@@ -186,6 +194,14 @@ renderPlaceholder inputId readonly =
             , ( "justify-content", "center" )
             , ( "align-items", "center" )
             ]
+
+        wrapperStyle =
+            if invalid then
+                [ ( "border", "1px solid red" )
+                , ( "width", "168px" )
+                ]
+            else
+                []
 
         event =
             case readonly of
@@ -212,21 +228,37 @@ renderPlaceholder inputId readonly =
 
                 True ->
                     Icon.view "photo" []
+
+        errorText =
+            styled p
+                [ cs "mdc-textfield-helptext mdc-textfield-helptext--validation-msg mdc-textfield-helptext--persistent"
+                , css
+                    "padding-top"
+                    "12px"
+                ]
+                [ text "Обязательное поле" ]
     in
         div []
-            [ label
-                [ style placeholderStyle
-                , for inputId
+            [ div
+                [ style wrapperStyle ]
+                [ label
+                    [ style placeholderStyle
+                    , for inputId
+                    ]
+                    [ icon ]
+                , input
+                    inputAttrs
+                    []
                 ]
-                [ icon ]
-            , input
-                inputAttrs
-                []
+            , if invalid then
+                errorText
+              else
+                text ""
             ]
 
 
-view : InputId -> Bool -> String -> Model -> Html Msg
-view inputId readonly title model =
+view : Config -> Model -> Html Msg
+view ({ readonly, title } as config) model =
     let
         body =
             case model.file of
@@ -234,7 +266,7 @@ view inputId readonly title model =
                     renderImage file readonly
 
                 Nothing ->
-                    renderPlaceholder inputId readonly
+                    renderPlaceholder config
     in
         div []
             [ div []
