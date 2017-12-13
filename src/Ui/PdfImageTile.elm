@@ -43,6 +43,7 @@ type Msg
     | OpenImage FileRecord
     | FileRendered RenderedFile
     | PreviewRendered RenderedPreview
+    | RenderError String
 
 
 type alias RenderedFile =
@@ -288,6 +289,9 @@ view ({ readonly, title } as config) model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        RenderError _ ->
+            model ! []
+
         ImageSelected inputId ->
             ( model
             , imageSelected inputId
@@ -340,3 +344,6 @@ port fileRendered : (RenderedFile -> msg) -> Sub msg
 
 
 port previewRendered : (RenderedPreview -> msg) -> Sub msg
+
+
+port errorDuringRender : (String -> msg) -> Sub msg
