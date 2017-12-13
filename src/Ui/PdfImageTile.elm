@@ -1,4 +1,4 @@
-port module Ui.ImageTile exposing (..)
+port module Ui.PdfImageTile exposing (..)
 
 import Html exposing (Html, div, input, label, text, img, span, p)
 import Html.Attributes exposing (type_, id, src, for, style, accept, disabled)
@@ -43,6 +43,7 @@ type Msg
     | OpenImage FileRecord
     | FileRendered RenderedFile
     | PreviewRendered RenderedPreview
+    | RenderError String
 
 
 type alias RenderedFile =
@@ -166,14 +167,18 @@ renderImage file readonly =
                 True ->
                     text ""
 
-        infoDiv = case readonly of
-          False -> div [ style thumbInfoStyle ]
-                                       [ span [ style titleStyle ] [ text filename_ ]
-                                       , div [ style btnStyles ]
-                                           [ deleteBtn
-                                           ]
-                                       ]
-          True -> text ""
+        infoDiv =
+            case readonly of
+                False ->
+                    div [ style thumbInfoStyle ]
+                        [ span [ style titleStyle ] [ text filename_ ]
+                        , div [ style btnStyles ]
+                            [ deleteBtn
+                            ]
+                        ]
+
+                True ->
+                    text ""
 
         thumb =
             div
@@ -284,6 +289,9 @@ view ({ readonly, title } as config) model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        RenderError _ ->
+            model ! []
+
         ImageSelected inputId ->
             ( model
             , imageSelected inputId
@@ -336,3 +344,6 @@ port fileRendered : (RenderedFile -> msg) -> Sub msg
 
 
 port previewRendered : (RenderedPreview -> msg) -> Sub msg
+
+
+port errorDuringRender : (String -> msg) -> Sub msg
