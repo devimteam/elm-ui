@@ -34,6 +34,15 @@ extractBase64 str =
         |> Maybe.withDefault ""
 
 
+pluralizeFull : Plural -> Int -> String
+pluralizeFull (Plural one two five) count =
+    let
+        text =
+            count |> pluralize (Plural one two five)
+    in
+        toString count ++ " " ++ text
+
+
 pluralize : Plural -> Int -> String
 pluralize (Plural one two five) count =
     let
