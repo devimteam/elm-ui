@@ -1,4 +1,4 @@
-port module Ui.ImageTile exposing (..)
+port module Ui.PdfImageTile exposing (..)
 
 import Html exposing (Html, div, input, label, text, img, span, p)
 import Html.Attributes exposing (type_, id, src, for, style, accept, disabled)
@@ -166,14 +166,18 @@ renderImage file readonly =
                 True ->
                     text ""
 
-        infoDiv = case readonly of
-          False -> div [ style thumbInfoStyle ]
-                                       [ span [ style titleStyle ] [ text filename_ ]
-                                       , div [ style btnStyles ]
-                                           [ deleteBtn
-                                           ]
-                                       ]
-          True -> text ""
+        infoDiv =
+            case readonly of
+                False ->
+                    div [ style thumbInfoStyle ]
+                        [ span [ style titleStyle ] [ text filename_ ]
+                        , div [ style btnStyles ]
+                            [ deleteBtn
+                            ]
+                        ]
+
+                True ->
+                    text ""
 
         thumb =
             div
