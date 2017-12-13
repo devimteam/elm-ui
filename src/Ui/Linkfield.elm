@@ -8,8 +8,7 @@ import Json.Decode as JD
 
 
 type alias Config =
-    { linkText : String
-    , nonLinkText : String
+    { nonLinkText : String
     , label : String
     , width : Int
     , fullWidth : Bool
@@ -17,10 +16,19 @@ type alias Config =
     }
 
 
+currencyConfig : String -> Config
+currencyConfig label =
+    { label = label
+    , nonLinkText = ""
+    , fullWidth = False
+    , width = 200
+    , asTitle = True
+    }
+
+
 defaultConfig : Config
 defaultConfig =
     { label = "Платежи"
-    , linkText = "Есть"
     , nonLinkText = "Нет"
     , fullWidth = False
     , width = 136
@@ -52,8 +60,8 @@ getMargin asTitle =
         "14px 0 8px 0"
 
 
-view : Config -> List (Html.Attribute msg) -> Bool -> Html msg
-view config linkAttributes showLink =
+view : String -> Config -> List (Html.Attribute msg) -> Bool -> Html msg
+view value config linkAttributes showLink =
     let
         linkfieldStyle =
             [ ( "margin", getMargin config.asTitle )
@@ -81,7 +89,7 @@ view config linkAttributes showLink =
             if showLink then
                 a
                     ([ style linkStyle ] ++ linkAttributes)
-                    [ text config.linkText ]
+                    [ text value ]
             else
                 text config.nonLinkText
     in
