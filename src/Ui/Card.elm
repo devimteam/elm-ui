@@ -46,7 +46,7 @@ view { open, toMsg, title } nodes =
                     []
                 ]
             , styled div
-                [ css "margin-top" "24px" |> when open ]
+                [ css "margin-top" "12px" |> when open ]
                 (if open then
                     nodes
                  else
