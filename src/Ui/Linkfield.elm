@@ -21,7 +21,7 @@ currencyConfig label =
     { label = label
     , nonLinkText = ""
     , fullWidth = False
-    , width = 200
+    , width = 250
     , asTitle = True
     }
 
