@@ -25,7 +25,6 @@ import Ui.Internal.Textfield as InternalTextfield
         , geometryDecoder
         )
 import Json.Decode as Json
-import Regex
 import Utils.General as Utils exposing (rusLocale, rusLocale1, Plural)
 import FormatNumber exposing (format)
 import MaskedInput.Text as MaskedText
@@ -168,6 +167,9 @@ calculateCurrencyValues str prevIntValue prevDisplayValue =
         formatted =
             stringToFloat >> format rusLocale
 
+        splitted =
+            Regex.split Regex.All (regex "[,.]") str
+
         checkSubmatch submatch =
             case submatch of
                 (Just a) :: (Just dot) :: (Just c) :: (Just e) :: _ ->
@@ -213,7 +215,7 @@ calculateCurrencyValues str prevIntValue prevDisplayValue =
                 _ ->
                     ( Nothing, Nothing )
     in
-        case (String.length str > 7) of
+        case (List.head splitted |> Maybe.withDefault str |> String.length) > 7 of
             True ->
                 ( prevIntValue, prevDisplayValue )
 
@@ -285,6 +287,9 @@ update msg model config =
                         calculateCurrencyValues str
                             model.intValue
                             model.displayCurrencyValue
+
+                    _ =
+                        Debug.log "l" ( intValue, displayCurrencyValue )
                 in
                     ({ model
                         | intValue = intValue
