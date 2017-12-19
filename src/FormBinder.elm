@@ -56,6 +56,9 @@ getErrorText v =
         Error.InvalidString ->
             "Обязательное поле"
 
+        Error.InvalidFormat ->
+            "Поле должно содержать только русские символы"
+
         a ->
             toString a
 
