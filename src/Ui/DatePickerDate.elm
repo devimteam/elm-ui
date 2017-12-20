@@ -14,6 +14,7 @@ module Ui.DatePickerDate
         , firstOfMonth
         , prevMonth
         , nextMonth
+        , nextMonthSaveDay
         , newYear
         , yearRange
         , formatCalendarHeaderDate
@@ -319,6 +320,21 @@ firstOfMonth date =
     mkDate (year date) (month date) 1
 
 
+nextMonthSaveDay : Date -> Date
+nextMonthSaveDay date =
+    let
+        nextMonth =
+            succMonth (month date)
+
+        nextYear =
+            if nextMonth == Jan then
+                year date + 1
+            else
+                year date
+    in
+        mkDate nextYear nextMonth (day date)
+
+
 nextMonth : Date -> Date
 nextMonth date =
     let
@@ -331,7 +347,7 @@ nextMonth date =
             else
                 year date
     in
-        mkDate nextYear nextMonth (day date)
+        mkDate nextYear nextMonth 1
 
 
 prevMonth : Date -> Date
