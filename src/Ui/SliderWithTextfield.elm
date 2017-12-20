@@ -11,6 +11,7 @@ module Ui.SliderWithTextfield
         , subscriptions
         , Msg(..)
         , periodConfig
+        , periodPeriodicConfig
         , sumConfig
         )
 
@@ -316,6 +317,33 @@ periodConfig =
                 , labelText = Just "Срок"
             }
         , extraPlural = Just (Plural "день" "дня" "дней")
+        , extraStatic = Nothing
+        }
+
+
+periodPeriodicConfig : Config
+periodPeriodicConfig =
+    let
+        slider =
+            Slider.defaultConfig
+
+        textfield =
+            Textfield.defaultConfig
+    in
+        { sliderConfig =
+            { slider
+                | steps = 1
+            }
+        , textfieldConfig =
+            { textfield
+                | defaultValue = Just "1"
+                , asTitle = True
+                , numbered = True
+                , plural = Just (Plural "месяц" "месяца" "месяцев")
+                , fullWidth = True
+                , labelText = Just "Срок"
+            }
+        , extraPlural = Just (Plural "месяц" "месяца" "месяцев")
         , extraStatic = Nothing
         }
 

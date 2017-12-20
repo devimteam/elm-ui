@@ -331,7 +331,7 @@ nextMonth date =
             else
                 year date
     in
-        mkDate nextYear nextMonth 1
+        mkDate nextYear nextMonth (day date)
 
 
 prevMonth : Date -> Date
