@@ -287,9 +287,6 @@ update msg model config =
                         calculateCurrencyValues str
                             model.intValue
                             model.displayCurrencyValue
-
-                    _ =
-                        Debug.log "l" ( intValue, displayCurrencyValue )
                 in
                     ({ model
                         | intValue = intValue
