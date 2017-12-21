@@ -13,6 +13,7 @@ module Ui.SliderWithTextfield
         , periodConfig
         , periodPeriodicConfig
         , sumConfig
+        , getBounds
         )
 
 import Html exposing (..)
@@ -111,6 +112,13 @@ defaultModel =
     { slider = Slider.defaultModel
     , textfield = Textfield.defaultModel
     }
+
+
+getBounds : Config -> ( Int, Int )
+getBounds config =
+    ( config.sliderConfig |> .min |> round
+    , config.sliderConfig |> .max |> round
+    )
 
 
 type Msg
