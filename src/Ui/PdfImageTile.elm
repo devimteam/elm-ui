@@ -1,7 +1,7 @@
 port module Ui.PdfImageTile exposing (..)
 
-import Html exposing (Html, div, input, label, text, img, span, p)
-import Html.Attributes exposing (type_, id, src, for, style, accept, disabled)
+import Html exposing (Html, div, input, label, text, img, span, p, node)
+import Html.Attributes exposing (type_, id, src, for, style, accept, disabled, attribute)
 import Html.Events exposing (on, onClick, onWithOptions)
 import Json.Decode as JD
 import Ui.Options as Options exposing (styled, cs, css, when)
@@ -105,6 +105,7 @@ renderImage file readonly =
 
         thumbStyle =
             [ ( "width", "168px" )
+            , ( "cursor", "pointer" )
             , ( "height", "120px" )
             , ( "position", "relative" )
             , ( "background", "#edeff1" )
@@ -152,6 +153,46 @@ renderImage file readonly =
             [ ( "color", "#cfd8dc" )
             ]
 
+        loader =
+            div
+                [ Attrs.style
+                    [ ( "position", "absolute" )
+                    , ( "top", "0" )
+                    , ( "bottom", "0" )
+                    , ( "left", "0" )
+                    , ( "right", "0" )
+                    , ( "z-index", "999" )
+                    ]
+                ]
+                [ div
+                    [ Attrs.style
+                        [ ( "display", "flex" )
+                        , ( "align-items", "center" )
+                        , ( "justify-content", "center" )
+                        , ( "background-color", "black" )
+                        , ( "opacity", "0.33" )
+                        , ( "position", "absolute" )
+                        , ( "top", "0" )
+                        , ( "bottom", "0" )
+                        , ( "left", "0" )
+                        , ( "right", "0" )
+                        , ( "z-index", "999" )
+                        ]
+                    ]
+                    [ div
+                        [ Attrs.style
+                            [ ( "height", "28px" )
+                            , ( "width", "28px" )
+                            , ( "animation", "material-rotate 0.8s infinite linear" )
+                            , ( "border", "3px solid #fff" )
+                            , ( "border-right-color", "transparent" )
+                            , ( "border-radius", "50%" )
+                            ]
+                        ]
+                        []
+                    ]
+                ]
+
         deleteBtn =
             case readonly of
                 False ->
@@ -188,7 +229,18 @@ renderImage file readonly =
                 [ infoDiv
                 ]
     in
-        div [] [ thumb ]
+        div
+            [ Attrs.style
+                [ ( "position", "relative" )
+                , ( "width", "168px" )
+                , ( "height", "120px" )
+                ]
+            ]
+            [ if file.preview == Nothing then
+                loader
+              else
+                thumb
+            ]
 
 
 renderPlaceholder : Config -> Html Msg
