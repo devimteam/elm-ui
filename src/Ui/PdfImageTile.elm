@@ -183,7 +183,7 @@ renderImage file readonly =
                         [ Attrs.style
                             [ ( "height", "28px" )
                             , ( "width", "28px" )
-                            , ( "animation", "material-rotate 0.8s infinite linear" )
+                            , ( "animation", "rotate 0.8s infinite linear" )
                             , ( "border", "3px solid #fff" )
                             , ( "border-right-color", "transparent" )
                             , ( "border-radius", "50%" )
