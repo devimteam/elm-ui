@@ -252,15 +252,15 @@ update msg model config previousInputText =
 view : Maybe String -> Model -> Config -> Html Msg
 view inputText model { sliderConfig, textfieldConfig, extraPlural, extraStatic } =
     let
-        extra =
+        extra n =
             (++) (extraStatic |> Maybe.withDefault "" |> (++) " ")
-                (Maybe.map (flip Utils.General.pluralize <| round sliderConfig.min) extraPlural |> Maybe.withDefault "")
+                (Maybe.map (flip Utils.General.pluralize <| round n) extraPlural |> Maybe.withDefault "")
 
         labelMin =
-            format rusLocale sliderConfig.min ++ extra
+            format rusLocale sliderConfig.min ++ (extra sliderConfig.min)
 
         labelMax =
-            format rusLocale sliderConfig.max ++ extra
+            format rusLocale sliderConfig.max ++ (extra sliderConfig.max)
     in
         Html.div []
             [ div [ style [] ]
