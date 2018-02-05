@@ -9,6 +9,7 @@ module Ui.Dialog
         , footer
         , acceptButton
         , cancelButton
+        , noEvents
           -- , openOn
           -- , closeOn
         )
@@ -89,6 +90,11 @@ view styling nodes =
         [ Html.div [ Html.class "mdc-dialog__surface" ] nodes
         , Html.div [ Html.class "mdc-dialog__backdrop" ] []
         ]
+
+
+noEvents : Style a
+noEvents =
+    cs "no-events"
 
 
 open : Style a
