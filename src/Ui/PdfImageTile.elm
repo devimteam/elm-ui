@@ -253,6 +253,7 @@ renderPlaceholder { inputId, readonly, invalid } =
             , ( "display", "flex" )
             , ( "justify-content", "center" )
             , ( "align-items", "center" )
+            , ( "cursor", "pointer" )
             ]
 
         wrapperStyle =
