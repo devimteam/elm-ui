@@ -72,6 +72,7 @@ type alias Config =
     , selected : Maybe String
     , width : Int
     , loading : Bool
+    , invalid : Bool
     }
 
 
@@ -81,11 +82,12 @@ defaultConfig =
     , selected = Nothing
     , width = 380
     , loading = False
+    , invalid = False
     }
 
 
-config : String -> Maybe String -> Int -> Config
-config label selected width =
+config : String -> Maybe String -> Int -> Bool -> Config
+config label selected width invalid =
     let
         tfConfig =
             Textfield.defaultConfig
@@ -100,6 +102,7 @@ config label selected width =
         , selected = selected
         , width = width
         , loading = False
+        , invalid = invalid
         }
 
 
@@ -148,8 +151,21 @@ viewEditable lift model { width, textfieldConfig, selected, loading } htmlItems 
 
 
 view : (Msg -> m) -> Model -> Config -> List (Html m) -> Html m
-view lift model { width, textfieldConfig, selected, loading } htmlItems =
+view lift model { width, textfieldConfig, selected, loading, invalid } htmlItems =
     let
+        tf =
+            case invalid of
+                True ->
+                    { textfieldConfig
+                        | invalid = True
+                        , required = True
+                        , errorText =
+                            "Обязательное поле"
+                    }
+
+                False ->
+                    textfieldConfig
+
         defaultMenuConfig =
             Menu.defaultConfig
 
@@ -162,16 +178,15 @@ view lift model { width, textfieldConfig, selected, loading } htmlItems =
             [ style
                 [ ( "height", "54px" )
                 , ( "min-height", "54px" )
-                , ( "border-bottom", "1px solid rgba(0, 0, 0, 0.12)" )
+                , ( "border-bottom"
+                  , if invalid then
+                        "1px solid #d50000"
+                    else
+                        "1px solid rgba(0, 0, 0, 0.12)"
+                  )
                 , ( "width", (toString width) ++ "px" )
-
-                -- , ( "padding-bottom"
-                --   , if selected == Nothing then
-                --         "4px"
-                --     else
-                --         "0px"
-                --   )
                 ]
+            , class "ui-select-wrapper"
             ]
             [ div
                 [ Menu.attach (lift << MenuMsg)
@@ -188,7 +203,7 @@ view lift model { width, textfieldConfig, selected, loading } htmlItems =
                 [ Textfield.viewReadonly
                     selected
                     model.textfield
-                    textfieldConfig
+                    tf
                     |> Html.map never
                 , Menu.view (lift << MenuMsg) model.menu menuConfig htmlItems
                 , Icon.asButton "arrow_drop_down"

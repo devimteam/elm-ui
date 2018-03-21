@@ -364,6 +364,24 @@ getWidth config =
         toString config.width |> flip (++) "px"
 
 
+errorsArea : Config -> Html a
+errorsArea config =
+    let
+        errorClasses =
+            [ ( "mdc-textfield-helptext mdc-textfield-helptext--validation-msg", True )
+            , ( "mdc-textfield-helptext--persistent", True )
+            ]
+
+        helperTextClasses =
+            [ ( "mdc-textfield-helptext mdc-textfield-helptext--persistent", True )
+            ]
+    in
+        div []
+            [ p [ classList errorClasses, style [ ( "max-width", getWidth config ) ] ] [ text (config.errorText) ]
+            , p [ classList helperTextClasses ] [ text (config.helperText) ]
+            ]
+
+
 viewReadonly : Maybe String -> Model -> Config -> Html Never
 viewReadonly value_ model config =
     let
@@ -497,6 +515,7 @@ viewReadonly value_ model config =
                     ]
                     []
                 ]
+            , errorsArea config
             ]
 
 
@@ -617,15 +636,6 @@ view value_ model config =
         pl =
             Maybe.map (flip Utils.pluralize intValue) config.plural
                 |> Maybe.withDefault ""
-
-        errorClasses =
-            [ ( "mdc-textfield-helptext mdc-textfield-helptext--validation-msg", True )
-            , ( "mdc-textfield-helptext--persistent", True )
-            ]
-
-        helperTextClasses =
-            [ ( "mdc-textfield-helptext mdc-textfield-helptext--persistent", True )
-            ]
 
         maskedInputHtml =
             MaskedText.input
@@ -775,8 +785,7 @@ view value_ model config =
                     ]
                     []
                 ]
-            , p [ classList errorClasses, style [ ( "max-width", getWidth config ) ] ] [ text (config.errorText) ]
-            , p [ classList helperTextClasses ] [ text (config.helperText) ]
+            , errorsArea config
             ]
 
 

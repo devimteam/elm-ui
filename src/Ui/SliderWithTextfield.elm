@@ -49,7 +49,7 @@ type alias Config =
     }
 
 
-withLimits1 : Config -> Float -> Float -> Float -> Int -> Config
+withLimits1 : Config -> Int -> Int -> Int -> Int -> Config
 withLimits1 config value min max steps =
     let
         sliderConfig =
@@ -68,10 +68,10 @@ withLimits1 config value min max steps =
 
         updatedSlider =
             { sliderConfig
-                | min = min
-                , max = max
+                | min = toFloat min
+                , max = toFloat max
                 , steps = steps
-                , value = resultValue
+                , value = toFloat resultValue
             }
     in
         { config | sliderConfig = updatedSlider }
