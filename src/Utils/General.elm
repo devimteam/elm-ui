@@ -177,3 +177,19 @@ rangeWithStepHelp lo hi step list =
         rangeWithStepHelp (lo + step) hi step (lo :: list)
     else
         List.reverse list
+
+
+
+-- @TODO: Remove these functions when update in SWT is ready
+
+
+fromMaybeStringToInt : Maybe String -> Int
+fromMaybeStringToInt =
+    Maybe.withDefault "0"
+        >> String.toInt
+        >> Result.withDefault 0
+
+
+fromIntToMaybeString : Int -> Maybe String
+fromIntToMaybeString =
+    toString >> Just
